@@ -1,7 +1,11 @@
 import React from 'react';
-import './App.css';
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import "bootstrap/dist/js/bootstrap.js";
+import 'mdbreact/dist/css/mdb.css'
 import inventory from './inventory.ES6';
-import ComposeSalad from "./ComposeSalad";
+import FileSelector from "./FileSelector";
 import OrderView from "./OrderView";
 import { BrowserRouter as Router, Route, Link, useParams } from "react-router-dom";
 
@@ -29,7 +33,7 @@ class App extends React.Component {
   }
 
   composeSaladElem() {
-    return (params) => <ComposeSalad {...params} inventory={inventory}
+    return (params) => <FileSelector {...params} inventory={inventory}
       saladSubmit={this.saladSubmit} />;
   }
 
@@ -55,14 +59,11 @@ class App extends React.Component {
     return (
       <Router>
         <div className="jumbotron text-center" style={{ "marginTop": "-50px" }}>
-          <h1 className="display-4">🌱 PLANTS 🌱</h1>
-          <p className="lead">Lunds äckligaste sallad</p>
+          <h1 className="display-4">Rösträknare</h1>
+          <p className="lead">Västgöta Nation</p>
           <ul className="nav nav-pills" style={{ "marginBottom": "-60px" }}>
             <li>
-              <Link className="nav-link" to="/compose-salad" style={{ "color": "green" }}>Komponera din sallad</Link>
-            </li>
-            <li>
-              <Link className="nav-link" to="/order-view" style={{ "color": "green" }}>Beställning</Link>
+              <Link className="nav-link" to="/compose-salad">Ladda upp röstningsformulär</Link>
             </li>
           </ul>
         </div>

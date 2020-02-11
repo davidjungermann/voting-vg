@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import App from "./App";
 import "./styles.css";
 import OrderView from "./OrderView.js";
-import ComposeSalad from "./ComposeSalad"
+import FileSelector from "./FileSelector"
 import { Route, Link, BrowserRouter as Router } from 'react-router-dom';
 import * as serviceWorker from './serviceWorker';
 
