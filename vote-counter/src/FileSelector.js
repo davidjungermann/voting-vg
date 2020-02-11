@@ -28,8 +28,7 @@ class FileSelector extends React.Component {
 
     handleSubmit(event) {
         if (event.target.checkValidity() === true) {
-            this.props.saladSubmit(this.createSalad());
-            this.props.history.push('/order-view');
+            this.props.history.push('/vote-view');
         }
         event.target.classList.add("was-validated");
         event.preventDefault();
