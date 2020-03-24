@@ -8,6 +8,7 @@
     "@testing-library/user-event": "^7.2.1",
     "bootstrap": "^4.4.1",
     "bootstrap-select": "^1.13.12",
+    "exceljs": "^3.8.1",
     "jquery": "^3.4.1",
     "mdbreact": "^4.25.0",
     "popper.js": "^1.16.1",
