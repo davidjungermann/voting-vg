@@ -18,15 +18,19 @@ async function initReferenceCodes() {
     return referenceCodes;
 }
 async function compareVotingCodes() {
+    let previousVoters = [];
     let codes = await initVotes();
     let referenceCodes = await initReferenceCodes();
 
     codes.forEach(code => {
         if (referenceCodes.includes(code)) {
+            previousVoters.push(code);
             console.log("Valid vote: " + code);
             referenceCodes = referenceCodes.filter(x => x !== code);
+        } else if (previousVoters.includes(code)) {
+            console.log("Invalid vote, has voted more than once: " + code);
         } else {
-            console.log("Invalid vote: " + code);
+            console.log("Invalid vote, not registered as a voter: " + code);
         }
     });
 }
