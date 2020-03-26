@@ -51,22 +51,33 @@ async function getElections() {
 async function getVotes() {
     const workbook = await initWorkbook("../../test.xlsx");
     let worksheet = workbook.getWorksheet();
-    var elections = await getElections();
+    let electionVotes = await getElections();
     for (i = 3; i <= worksheet.actualColumnCount; i++) {
         worksheet.getColumn(i).eachCell(cell => {
-            for (let prop in elections) {
+            for (let prop in electionVotes) {
                 if (cell.text.startsWith(prop)) {
-                    let votes = elections[prop];
+                    let votes = electionVotes[prop];
                     votes.push(cell.text);
-                    elections[prop] = votes;
+                    electionVotes[prop] = votes;
                 }
             }
         });
     }
-    for (let prop in elections) {
-        elections[prop].shift();
+    for (let prop in electionVotes) {
+        electionVotes[prop].shift();
     }
-    return elections;
+    return electionVotes;
 }
 
-getVotes();
+async function countVotes() {
+    const votes = await getVotes();
+    for (let prop in votes) {
+        votes[prop].map(vote => {
+            votes[vote] = (votes[vote] + 1) || 1;
+        });
+    }
+    console.log(votes)
+    return votes; 
+}
+
+countVotes();
