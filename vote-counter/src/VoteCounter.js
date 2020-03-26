@@ -1,20 +1,20 @@
 const Excel = require('exceljs');
 
-async function initWorksheet(path) {
+async function initWorkbook(path) {
     let voting_workbook = new Excel.Workbook();
     return await voting_workbook.xlsx.readFile(path);
 }
 
 async function initVotes() {
     let codes = [];
-    const workbook = await initWorksheet("../../test.xlsx");
+    const workbook = await initWorkbook("../../test.xlsx");
     workbook.getWorksheet().getColumn("B").eachCell(content => codes.push(content.text));
     return codes.slice(1);
 }
 
 async function initReferenceCodes() {
     let referenceCodes = [];
-    const workbook = await initWorksheet("../../voting_codes.xlsx");
+    const workbook = await initWorkbook("../../voting_codes.xlsx");
     workbook.getWorksheet().getColumn("B").eachCell(content => referenceCodes.push(content.text));
     return referenceCodes;
 }
@@ -37,7 +37,15 @@ async function compareVotingCodes() {
     });
 }
 
-function getColumnHeaders() {
-    
+async function getElections() {
+    var columnHeaders = {};
+    const workbook = await initWorkbook("../../test.xlsx");
+    workbook.getWorksheet().getRow(1).eachCell(content => {
+        if (content.text !== "Tidstämpel" && content.text !== "Valkod") {
+            columnHeaders[content.text] = [];
+        }
+    });
+    return columnHeaders;
 }
-compareVotingCodes();
+//compareVotingCodes();
+getElections();
