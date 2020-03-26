@@ -47,5 +47,15 @@ async function getElections() {
     });
     return columnHeaders;
 }
-//compareVotingCodes();
-getElections();
+
+async function countVotes() {
+    let elections = await getElections();
+    const workbook = await initWorkbook("../../test.xlsx");
+    let worksheet = workbook.getWorksheet()
+
+    for (i = 1; i <= worksheet.actualColumnCount; i++) {
+        worksheet.getColumn(i).eachCell(cell => console.log(cell.text));
+    }
+}
+
+countVotes();
