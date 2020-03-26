@@ -1,22 +1,24 @@
 const Excel = require('exceljs');
 
-async function initVotes() {
+async function initWorksheet(path) {
     let voting_workbook = new Excel.Workbook();
-    let codes = [];
+    return await voting_workbook.xlsx.readFile(path);
+}
 
-    const workbook = await voting_workbook.xlsx.readFile("../../test.xlsx");
+async function initVotes() {
+    let codes = [];
+    const workbook = await initWorksheet("../../test.xlsx");
     workbook.getWorksheet().getColumn("B").eachCell(content => codes.push(content.text));
     return codes.slice(1);
 }
 
 async function initReferenceCodes() {
-    let reference_workbook = new Excel.Workbook();
     let referenceCodes = [];
-
-    const workbook = await reference_workbook.xlsx.readFile("../../voting_codes.xlsx");
+    const workbook = await initWorksheet("../../voting_codes.xlsx");
     workbook.getWorksheet().getColumn("B").eachCell(content => referenceCodes.push(content.text));
     return referenceCodes;
 }
+
 async function compareVotingCodes() {
     let previousVoters = [];
     let codes = await initVotes();
@@ -33,5 +35,9 @@ async function compareVotingCodes() {
             console.log("Invalid vote, not registered as a voter: " + code);
         }
     });
+}
+
+function getColumnHeaders() {
+    
 }
 compareVotingCodes();
