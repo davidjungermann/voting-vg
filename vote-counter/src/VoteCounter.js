@@ -37,22 +37,32 @@ async function compareVotingCodes() {
     });
 }
 
+async function getElections() {
+    var columnHeaders = {};
+    const workbook = await initWorkbook("../../test.xlsx");
+    workbook.getWorksheet().getRow(1).eachCell(content => {
+        if (content.text !== "Tidstämpel" && content.text !== "Valkod") {
+            columnHeaders[content.text] = [];
+        }
+    });
+    return columnHeaders;
+}
+
 async function countVotes() {
     const workbook = await initWorkbook("../../test.xlsx");
     let worksheet = workbook.getWorksheet();
-    var columnHeaders = {};
-    let values = [];
+    var elections = await getElections();
     for (i = 3; i <= worksheet.actualColumnCount; i++) {
         worksheet.getColumn(i).eachCell(cell => {
-            values.push(cell.text);
-    
-            /*if (cell.text.startsWith("Val:")) {
-                columnHeaders[cell.text] = [];
-            }*/
-         }); 
+
+            for (prop in elections) {
+                if (cell.text.startsWith(prop)) {
+                    console.log(prop + " har följande röster: " + cell.text)
+                }
+            }
+        });
     }
-    let test = values.splice(0, values.indexOf(''))
-    console.log(test);
+    console.log(elections);
 }
 
 countVotes();
