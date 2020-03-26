@@ -71,13 +71,19 @@ async function getVotes() {
 
 async function countVotes() {
     const votes = await getVotes();
+    const results = {};
     for (let prop in votes) {
         votes[prop].map(vote => {
-            votes[vote] = (votes[vote] + 1) || 1;
+            results[vote] = (results[vote] + 1) || 1;
         });
     }
-    console.log(votes)
-    return votes; 
+    return results; 
 }
 
-countVotes();
+async function getElectionResults() {
+    var isValid = await compareVotingCodes();
+    console.log(await countVotes());
+    //return result;
+}
+
+getElectionResults();
