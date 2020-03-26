@@ -54,10 +54,12 @@ async function countVotes() {
     var elections = await getElections();
     for (i = 3; i <= worksheet.actualColumnCount; i++) {
         worksheet.getColumn(i).eachCell(cell => {
-
             for (prop in elections) {
                 if (cell.text.startsWith(prop)) {
                     console.log(prop + " har följande röster: " + cell.text)
+                    let votes = elections[prop];
+                    votes.push(cell.text);
+                    elections[prop] = votes;
                 }
             }
         });
