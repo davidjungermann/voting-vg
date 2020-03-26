@@ -48,15 +48,14 @@ async function getElections() {
     return columnHeaders;
 }
 
-async function countVotes() {
+async function getVotes() {
     const workbook = await initWorkbook("../../test.xlsx");
     let worksheet = workbook.getWorksheet();
     var elections = await getElections();
     for (i = 3; i <= worksheet.actualColumnCount; i++) {
         worksheet.getColumn(i).eachCell(cell => {
-            for (prop in elections) {
+            for (let prop in elections) {
                 if (cell.text.startsWith(prop)) {
-                    console.log(prop + " har följande röster: " + cell.text)
                     let votes = elections[prop];
                     votes.push(cell.text);
                     elections[prop] = votes;
@@ -64,7 +63,10 @@ async function countVotes() {
             }
         });
     }
-    console.log(elections);
+    for (let prop in elections) {
+        elections[prop].shift();
+    }
+    return elections;
 }
 
-countVotes();
+getVotes();
