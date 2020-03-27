@@ -76,7 +76,7 @@ async function countVotes() {
         votes[prop].map(vote => {
             vote = vote.split(",");
             vote.forEach(vote => {
-                results[vote] = (results[vote] + 1) || 1;
+                results[vote.trim()] = (results[vote.trim()] + 1) || 1;
             });
         });
     }
