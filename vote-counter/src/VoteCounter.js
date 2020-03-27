@@ -74,14 +74,17 @@ async function countVotes() {
     const results = {};
     for (let prop in votes) {
         votes[prop].map(vote => {
-            results[vote] = (results[vote] + 1) || 1;
+            vote = vote.split(",");
+            vote.forEach(vote => {
+                results[vote] = (results[vote] + 1) || 1;
+            });
         });
     }
-    return results; 
+    return results;
 }
 
 async function getElectionResults() {
-    var isValid = await compareVotingCodes();
+    // var isValid = await compareVotingCodes();
     console.log(await countVotes());
     //return result;
 }
