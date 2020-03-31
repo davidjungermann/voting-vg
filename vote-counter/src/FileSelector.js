@@ -6,14 +6,17 @@ import 'mdbreact/dist/css/mdb.css';
 import "./FileSelector.css";
 import React from 'react';
 import firebase from "firebase";
-import storage from "firebase/storage";
 
 class FileSelector extends React.Component {
     constructor(props) {
         super(props);
 
-        this.setRef = ref => {
-            this.file = ref;
+        this.setCodeRef = ref => {
+            this.codeFile = ref;
+        }
+
+        this.setVoteRef = ref => {
+            this.voteFile = ref;
         }
 
         const config = {
@@ -27,18 +30,32 @@ class FileSelector extends React.Component {
         };
 
         firebase.initializeApp(config);
-        this.onClick = this.onClick.bind(this);
+        this.handleVotingCodes = this.handleVotingCodes.bind(this);
     }
 
-    onClick = event => {
-        const file = this.file.files[0];
+    handleVotingCodes = event => {
+        const file = this.voteFile.files[0];
         const storageRef = firebase.storage().ref();
         const excelFile = storageRef.child("voting_codes.xlsx");
 
         excelFile.put(file).then((snapshot) => {
             excelFile.getDownloadURL().then((url) => {
                 this.setState({
-                    votingFile: url
+                    votingCodesFile: url
+                });
+            });
+        });
+    }
+
+    handleVotes = event => {
+        const file = this.codeFile.files[0];
+        const storageRef = firebase.storage().ref();
+        const excelFile = storageRef.child("votes.xlsx");
+
+        excelFile.put(file).then((snapshot) => {
+            excelFile.getDownloadURL().then((url) => {
+                this.setState({
+                    votesFile: url
                 });
             });
         });
@@ -47,8 +64,14 @@ class FileSelector extends React.Component {
     render() {
         return (
             <div>
-                <input type="file" ref={this.setRef} />
-                <button type="button" onClick={this.onClick}>Upload</button>
+                <div>
+                    <input type="file" ref={this.setCodeRef} />
+                    <button type="button" onClick={this.handleVotingCodes}>Upload</button>
+                </div>
+                <div>
+                    <input type="file" ref={this.setVoteRef} />
+                    <button type="button" onClick={this.handleVotes}>Upload</button>
+                </div>
             </div>
         );
     }
