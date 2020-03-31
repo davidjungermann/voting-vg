@@ -3,9 +3,8 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
 import "bootstrap/dist/js/bootstrap.js";
 import 'mdbreact/dist/css/mdb.css';
-import "./FileSelector.css";
 import React from 'react';
-import Firebase from "./FirebaseInstance";
+import FirebaseInstance from "./FirebaseInstance"
 
 class FileSelector extends React.Component {
     constructor(props) {
@@ -19,12 +18,15 @@ class FileSelector extends React.Component {
             this.voteFile = ref;
         }
 
+        this.firebase = new FirebaseInstance().firebase;
+
         this.handleVotingCodes = this.handleVotingCodes.bind(this);
+        this.handleVotes = this.handleVotes.bind(this);
     }
 
     handleVotingCodes = event => {
-        const file = this.voteFile.files[0];
-        const storageRef = Firebase.storage().ref();
+        const file = this.codeFile.files[0];
+        const storageRef = this.firebase.storage().ref();
         const excelFile = storageRef.child("voting_codes.xlsx");
 
         excelFile.put(file).then((snapshot) => {
@@ -37,8 +39,8 @@ class FileSelector extends React.Component {
     }
 
     handleVotes = event => {
-        const file = this.codeFile.files[0];
-        const storageRef = Firebase.storage().ref();
+        const file = this.voteFile.files[0];
+        const storageRef = this.firebase.storage().ref();
         const excelFile = storageRef.child("votes.xlsx");
 
         excelFile.put(file).then((snapshot) => {
@@ -52,14 +54,21 @@ class FileSelector extends React.Component {
 
     render() {
         return (
-            <div>
-                <div>
-                    <input type="file" ref={this.setCodeRef} />
-                    <button type="button" onClick={this.handleVotingCodes}>Upload</button>
-                </div>
-                <div>
-                    <input type="file" ref={this.setVoteRef} />
-                    <button type="button" onClick={this.handleVotes}>Upload</button>
+            <div className="container">
+                <div className="d-flex">
+                    <div className="pl-5 mr-2">
+                        <h5>Ladda upp din fil med röstkoder</h5>
+                        <input type="file" className="form-control-file" ref={this.setCodeRef} />
+                        <br></br>
+                        <button type="button" className="btn btn-success" onClick={this.handleVotingCodes}>Ladda upp</button>
+                    </div>
+                    <br></br>
+                    <div className="ml-5">
+                        <h5>Ladda upp din fil med röster</h5>
+                        <input type="file" className="form-control-file" ref={this.setVoteRef} />
+                        <br></br>
+                        <button type="button" className="btn btn-success" onClick={this.handleVotes}>Ladda upp</button>
+                    </div>
                 </div>
             </div>
         );
