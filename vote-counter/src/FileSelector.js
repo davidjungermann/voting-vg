@@ -5,7 +5,7 @@ import "bootstrap/dist/js/bootstrap.js";
 import 'mdbreact/dist/css/mdb.css';
 import "./FileSelector.css";
 import React from 'react';
-import firebase from "firebase";
+import Firebase from "./FirebaseInstance";
 
 class FileSelector extends React.Component {
     constructor(props) {
@@ -19,23 +19,12 @@ class FileSelector extends React.Component {
             this.voteFile = ref;
         }
 
-        const config = {
-            apiKey: "AIzaSyCQnGWPb9g0qVM-mYsuvC-MlbWztZBdtmw",
-            authDomain: "vg-voting-83c84.firebaseapp.com",
-            databaseURL: "https://vg-voting-83c84.firebaseio.com",
-            projectId: "vg-voting-83c84",
-            storageBucket: "vg-voting-83c84.appspot.com",
-            messagingSenderId: "14819118797",
-            appId: "1:14819118797:web:6a3006215809c1a8ffe384"
-        };
-
-        firebase.initializeApp(config);
         this.handleVotingCodes = this.handleVotingCodes.bind(this);
     }
 
     handleVotingCodes = event => {
         const file = this.voteFile.files[0];
-        const storageRef = firebase.storage().ref();
+        const storageRef = Firebase.storage().ref();
         const excelFile = storageRef.child("voting_codes.xlsx");
 
         excelFile.put(file).then((snapshot) => {
@@ -49,7 +38,7 @@ class FileSelector extends React.Component {
 
     handleVotes = event => {
         const file = this.codeFile.files[0];
-        const storageRef = firebase.storage().ref();
+        const storageRef = Firebase.storage().ref();
         const excelFile = storageRef.child("votes.xlsx");
 
         excelFile.put(file).then((snapshot) => {
