@@ -49,23 +49,6 @@ class FileSelector extends React.Component {
                     votesFile: url
                 });
             });
-
-            var storage = this.firebase.storage();
-            var pathReference = storage.ref('votes.xlsx');
-            storageRef.child('votes.xlsx').getDownloadURL().then(function (url) {
-                let excelFile = url;
-                fetch(url).then(result => {
-                    result.blob().then(file => {
-                        var workbook = new Excel.Workbook();
-                        var arrayBuffer = file.arrayBuffer();
-                        workbook.xlsx.load(arrayBuffer).then(() => {
-                            console.log(workbook.getWorksheet().getColumn("A"));
-                        });
-                    });
-                });
-            }).catch(function (error) {
-                // Handle any errors
-            });
         });
     }
 
