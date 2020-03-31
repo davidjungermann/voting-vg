@@ -6,14 +6,17 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "bootstrap-select": "^1.13.12",
     "exceljs": "^3.8.1",
+    "firebase": "^7.13.1",
     "jquery": "^3.4.1",
     "mdbreact": "^4.25.0",
     "popper.js": "^1.16.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
+    "react-dropzone": "^10.2.2",
     "react-scripts": "^3.4.0"
   },
   "scripts": {

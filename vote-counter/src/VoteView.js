@@ -4,7 +4,6 @@ import 'mdbreact/dist/css/mdb.css';
 import React from "react";
 
 class VoteView extends React.Component {
-
     render() {
         return (
             <ul className="container w-50">

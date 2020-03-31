@@ -7,29 +7,17 @@ import 'mdbreact/dist/css/mdb.css'
 import FileSelector from "./FileSelector";
 import VoteView from "./VoteView";
 
-
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.saladSubmit = this.voteSubmit.bind(this);
-    this.state = {
-      order: []
-    };
-  }
-
-  voteSubmit(salad) {
-    let tempSalads = [...this.state.order];
-    tempSalads.push(salad)
-    this.setState({ order: tempSalads })
   }
 
   render() {
     return (
       <div>
-        <div className="jumbotron text-center" style={{ "marginTop": "-50px" }}>
+        <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
           <h1 className="display-4">Rösträknare</h1>
           <p className="lead">Västgöta Nation</p>
-
         </div>
         <div className="container w-50">
           <FileSelector></FileSelector>

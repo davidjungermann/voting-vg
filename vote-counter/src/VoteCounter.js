@@ -15,7 +15,7 @@ async function initVotes() {
 async function initReferenceCodes() {
     let referenceCodes = [];
     const workbook = await initWorkbook("../../voting_codes.xlsx");
-    workbook.getWorksheet().getColumn("B").eachCell(content => referenceCodes.push(content.text));
+    workbook.getWorksheet().getColumn("A").eachCell(content => referenceCodes.push(content.text));
     return referenceCodes;
 }
 
@@ -84,9 +84,9 @@ async function countVotes() {
 }
 
 async function getElectionResults() {
-    // var isValid = await compareVotingCodes();
-    console.log(await countVotes());
-    //return result;
+    var isValid = await compareVotingCodes();
+    var finalResults = await countVotes();
+    console.log(finalResults);
 }
 
 getElectionResults();
