@@ -33,6 +33,15 @@ class FileSelector extends React.Component {
     onClick = event => {
         const file = this.file.files[0];
         const storageRef = firebase.storage().ref();
+        const excelFile = storageRef.child("voting_codes.xlsx");
+
+        excelFile.put(file).then((snapshot) => {
+            excelFile.getDownloadURL().then((url) => {
+                this.setState({
+                    votingFile: url
+                });
+            });
+        });
     }
 
     render() {
