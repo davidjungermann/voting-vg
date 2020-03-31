@@ -19,7 +19,6 @@ class FileSelector extends React.Component {
         }
 
         this.firebase = new FirebaseInstance().firebase;
-
         this.handleVotingCodes = this.handleVotingCodes.bind(this);
         this.handleVotes = this.handleVotes.bind(this);
     }
@@ -49,6 +48,18 @@ class FileSelector extends React.Component {
                     votesFile: url
                 });
             });
+        });
+        var storage = this.firebase.storage();
+        var pathReference = storage.ref('votes.xlsx');
+        storageRef.child('votes.xlsx').getDownloadURL().then(function (url) {
+            let excelFile = url;
+            fetch(url).then(result => {
+                result.blob().then(file => {
+                    console.log(file);
+                });
+            });
+        }).catch(function (error) {
+            // Handle any errors
         });
     }
 
