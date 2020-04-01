@@ -80,12 +80,12 @@ class VoteView extends React.Component {
         codes.forEach(code => {
             if (referenceCodes.includes(code)) {
                 previousVoters.push(code);
-                result.push("Valid vote: " + code);
+                result.push("Giltig röst: " + code);
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
-                result.push("Invalid vote, has voted more than once: " + code);
+                result.push("Ogiltig röst, har röstat mer än 1 gång: " + code);
             } else {
-                result.push("Invalid vote, not registered as a voter: " + code);
+                result.push("Ogiltig röst, ej registrerad: " + code);
             }
         });
         return result;
@@ -165,7 +165,7 @@ class VoteView extends React.Component {
     resultButton() {
         return (
             <div className="col text-center">
-                <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.calculateResults}>Visa resultat</button>
+                <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.calculateResults}>Visa valresultat</button>
             </div>
         );
     }
@@ -191,7 +191,7 @@ class VoteView extends React.Component {
                     }
                 </ul>
                 <div className="col text-center">
-                    <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
+                    <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
                 </div>
             </div >
         );
