@@ -112,6 +112,41 @@ class VoteView extends React.Component {
         return columnHeaders;
     }
 
+    async getVotes() {
+        const workbook = this.state.voteWorkbook;
+        let worksheet = workbook.getWorksheet();
+        let electionVotes = await this.getElections();
+        for (let i = 3; i <= worksheet.actualColumnCount; i++) {
+            worksheet.getColumn(i).eachCell(cell => {
+                for (let prop in electionVotes) {
+                    if (cell.text.startsWith(prop)) {
+                        let votes = electionVotes[prop];
+                        votes.push(cell.text);
+                        electionVotes[prop] = votes;
+                    }
+                }
+            });
+        }
+        for (let prop in electionVotes) {
+            electionVotes[prop].shift();
+        }
+        return electionVotes;
+    }
+
+    async countVotes() {
+        const votes = await this.getVotes();
+        const results = {};
+        for (let prop in votes) {
+            votes[prop].map(vote => {
+                vote = vote.split(",");
+                vote.forEach(vote => {
+                    results[vote.trim()] = (results[vote.trim()] + 1) || 1;
+                });
+            });
+        }
+        return results;
+    }
+
     // --------------------------------------------------------------------------------------------------------------------------------------- //
 
     onClick = event => {
@@ -120,7 +155,7 @@ class VoteView extends React.Component {
     }
 
     testStuff = event => {
-       this.getElections().then(result => console.log(result))
+       this.countVotes().then(result => console.log(result))
     }
 
     render() {
