@@ -146,23 +146,35 @@ class VoteView extends React.Component {
         event.preventDefault();
     }
 
-    testStuff = event => {
+    calculateResults = event => {
         var result = this.countVotes();
         var votingResult = this.compareVotingCodes();
-        this.setState({ votingResult: votingResult, finalResults: Object.entries(result), resultsVisible: true })
+        var objArray = Object.entries(result);
+        var finalResult = [];
+
+        objArray.forEach(([key, value]) => {
+            if (value == 1) {
+                var s = " röst"
+            } else {
+                var s = " röster"
+            }
+            finalResult.push(key + ": " + value + s);
+        });
+
+        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true })
     }
 
     resultList() {
         return (
             <div className="container">
                 <ul>
-                    {this.state.votingResult.map((number) =>
-                        <li>{number}</li>
+                    {this.state.votingResult.map((codeEvaluation) =>
+                        <li>{codeEvaluation}</li>
                     )}
                 </ul>
                 <ul>
-                    {this.state.finalResults.map((number) =>
-                        <li>{number}</li>
+                    {this.state.finalResults.map((result) =>
+                        <li>{result}</li>
                     )}
                 </ul>
             </div>
@@ -175,7 +187,7 @@ class VoteView extends React.Component {
                 <div className="row">
                     <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
-                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.testStuff}>Visa resultat</button>
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.calculateResults}>Visa resultat</button>
                     </div>
                     {this.state.resultsVisible ? this.resultList() : null}
                 </div>
