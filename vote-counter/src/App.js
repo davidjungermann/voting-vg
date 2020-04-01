@@ -6,7 +6,6 @@ import "bootstrap/dist/js/bootstrap.js";
 import 'mdbreact/dist/css/mdb.css'
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import FileSelector from "./FileSelector";
-import VoteView from "./VoteView";
 import ResultsView from "./ResultsView";
 
 class App extends React.Component {
@@ -28,7 +27,7 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Redirect exact from="/" to="/file-selector" />
+          <Redirect exact from="/" to="/file-selector"/>
           <div>
             <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
               <h1 className="display-4"><span role="img" aria-label="vote">🗳️</span> Rösträknare <span role="img" aria-label="vote">🗳️</span></h1>

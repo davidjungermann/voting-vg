@@ -56,6 +56,8 @@ class FileSelector extends React.Component {
     onClick = event => {
         this.handleVotes();
         this.handleVotingCodes();
+        this.props.history.push('/results');
+        event.preventDefault();
     }
 
     render() {
@@ -63,13 +65,13 @@ class FileSelector extends React.Component {
             <div className="container">
                 <div>
                     <div className="row justify-content-center">
-                        <div className="ml-4 mr-4">
-                            <h4>Ladda upp din fil med röstkoder</h4>
+                        <div className="ml-5 mr-2">
+                            <h4>Ladda upp fil med röstkoder</h4>
                             <input type="file" className="form-control-file" ref={this.setCodeRef} />
                         </div>
                         <br></br>
-                        <div className="ml-4 mr-4">
-                            <h4>Ladda upp din fil med röster</h4>
+                        <div className="ml-4">
+                            <h4>Ladda upp fil med röster</h4>
                             <input type="file" className="form-control-file" ref={this.setVoteRef} />
                         </div>
                     </div>
