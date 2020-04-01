@@ -75,8 +75,8 @@ class FileSelector extends React.Component {
                     </div>
                 </div>
                 <br></br>
-                <div class="row">
-                    <div class="col text-center">
+                <div className="row">
+                    <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Ladda upp</button>
                     </div>
                 </div>

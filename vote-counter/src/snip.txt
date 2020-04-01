@@ -14,3 +14,9 @@ var storage = this.firebase.storage();
             }).catch(function (error) {
                 // Handle any errors
             });
+
+            <div>
+                        {this.state.finalResults.map(listItem => (
+                            <li className="list-group-item list-group-item-primary" />
+                        ))}
+                    </div>

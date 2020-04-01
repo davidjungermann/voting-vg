@@ -6,36 +6,22 @@ import FirebaseInstance from "./FirebaseInstance";
 const Excel = require('exceljs');
 
 class VoteView extends React.Component {
-    _isMounted = false;
 
     constructor(props) {
         super(props);
-        this.state = { voteWorkbook: null, codeWorkbook: null }
+        this.firebase = new FirebaseInstance().firebase;
+        this.codeWorkbook = null;
+        this.voteWorkbook = null;
+        this.state = { finalResults: [] }
         this.onClick = this.onClick.bind(this);
     }
 
     componentDidMount() {
-        this._isMounted = true;
-        this.firebase = new FirebaseInstance().firebase;
-
-        this.initCodeFile().then(result => {
-            if (this._isMounted) {
-                this.setState({ codeWorkbook: result });
-            }
-        });
-
-        this.initVoteFile().then(result => {
-            if (this._isMounted) {
-                this.setState({ voteWorkbook: result });
-            }
-        });
+        this.codeWorkbook = this.initCodeFile();
+        this.voteWorkbook = this.initVoteFile();
     }
 
-    componentWillUnmount() {
-        this._isMounted = false;
-    }
-
-    async initVoteFile() {
+    initVoteFile() {
         var workbook = new Excel.Workbook();
         const storageRef = this.firebase.storage().ref();
         storageRef.child('votes.xlsx').getDownloadURL().then(function (url) {
@@ -47,12 +33,12 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            // Handle any errors
+            alert("kuken");
         });
         return workbook;
     }
 
-    async initCodeFile() {
+    initCodeFile() {
         var workbook = new Excel.Workbook();
         const storageRef = this.firebase.storage().ref();
         storageRef.child('voting_codes.xlsx').getDownloadURL().then(function (url) {
@@ -64,46 +50,49 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            // Handle any errors
+            alert("kuken");
         });
         return workbook;
     }
 
-    async getVotingCodes() {
+    getVotingCodes(wb) {
         let codes = [];
-        const workbook = this.state.voteWorkbook;
+        const workbook = wb;
         workbook.getWorksheet().getColumn("B").eachCell(content => codes.push(content.text));
         return codes.slice(1);
     }
 
-    async getReferenceCodes() {
+    getReferenceCodes(wb) {
         let referenceCodes = [];
-        const workbook = this.state.codeWorkbook;
+        const workbook = wb;
         workbook.getWorksheet().getColumn("A").eachCell(content => referenceCodes.push(content.text));
         return referenceCodes;
     }
 
-    async compareVotingCodes() {
+    compareVotingCodes() {
+        const workbook = this.voteWorkbook
         let previousVoters = [];
-        let codes = await this.getVotingCodes();
-        let referenceCodes = await this.getReferenceCodes();
-    
+        let codes = this.getVotingCodes(workbook);
+        let referenceCodes = this.getReferenceCodes(workbook);
+        var result = [];
+
         codes.forEach(code => {
             if (referenceCodes.includes(code)) {
                 previousVoters.push(code);
-                console.log("Valid vote: " + code);
+                result.push("Valid vote: " + code);
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
-                console.log("Invalid vote, has voted more than once: " + code);
+                result.push("Invalid vote, has voted more than once: " + code);
             } else {
-                console.log("Invalid vote, not registered as a voter: " + code);
+                result.push("Invalid vote, not registered as a voter: " + code)
             }
         });
+        return result;
     }
 
-    async getElections() {
+    getElections(wb) {
         var columnHeaders = {};
-        const workbook = this.state.voteWorkbook;
+        const workbook = wb;
         workbook.getWorksheet().getRow(1).eachCell(content => {
             if (content.text !== "Tidstämpel" && content.text !== "Valkod") {
                 columnHeaders[content.text] = [];
@@ -112,10 +101,10 @@ class VoteView extends React.Component {
         return columnHeaders;
     }
 
-    async getVotes() {
-        const workbook = this.state.voteWorkbook;
+    getVotes(wb) {
+        const workbook = wb;
         let worksheet = workbook.getWorksheet();
-        let electionVotes = await this.getElections();
+        let electionVotes = this.getElections(workbook);
         for (let i = 3; i <= worksheet.actualColumnCount; i++) {
             worksheet.getColumn(i).eachCell(cell => {
                 for (let prop in electionVotes) {
@@ -133,8 +122,8 @@ class VoteView extends React.Component {
         return electionVotes;
     }
 
-    async countVotes() {
-        const votes = await this.getVotes();
+    countVotes() {
+        const votes = this.getVotes(this.voteWorkbook);
         const results = {};
         for (let prop in votes) {
             votes[prop].map(vote => {
@@ -155,16 +144,20 @@ class VoteView extends React.Component {
     }
 
     testStuff = event => {
-       this.countVotes().then(result => console.log(result))
+        var result = this.countVotes();
+        var votingResult = this.compareVotingCodes();
+        console.log(result);
+        console.log(votingResult);
+        this.setState({ finalResults: result })
     }
 
     render() {
         return (
             <div className="container">
-                <div class="row">
-                    <div class="col text-center">
+                <div className="row">
+                    <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
-                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.testStuff}>Prova grejer</button>
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.testStuff}>Visa resultat</button>
                     </div>
                 </div>
             </div>
