@@ -9,10 +9,6 @@ import FileSelector from "./FileSelector";
 import ResultsView from "./ResultsView";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   composeVoteView() {
     return (params) => <ResultsView {...params} />;
   }

@@ -1,4 +1,3 @@
-import $ from "jquery";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -6,7 +5,6 @@ import "bootstrap/dist/js/bootstrap.js";
 import 'mdbreact/dist/css/mdb.css';
 import React from 'react';
 import FirebaseInstance from "./FirebaseInstance";
-const Excel = require('exceljs');
 
 class FileSelector extends React.Component {
     constructor(props) {
@@ -19,7 +17,6 @@ class FileSelector extends React.Component {
         this.setVoteRef = ref => {
             this.voteFile = ref;
         }
-        this.firebase = null; 
         this.firebase = new FirebaseInstance().firebase;
         this.handleVotingCodes = this.handleVotingCodes.bind(this);
         this.handleVotes = this.handleVotes.bind(this);
