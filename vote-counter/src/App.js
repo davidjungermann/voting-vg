@@ -23,9 +23,12 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Redirect exact from="/" to="/file-selector"/>
+          <Redirect exact from="/" to="/file-selector" />
           <div>
             <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
+              <div className="text-left">
+                <span>Frågor/support: david.jungermann@gmail.com</span>
+              </div>
               <h1 className="display-4"><span role="img" aria-label="vote">🗳️</span> Rösträknare <span role="img" aria-label="vote">🗳️</span></h1>
               <p className="lead">Västgöta Nation</p>
             </div>
