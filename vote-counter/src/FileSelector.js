@@ -1,3 +1,4 @@
+import $ from "jquery";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -52,22 +53,31 @@ class FileSelector extends React.Component {
         });
     }
 
+    onClick = event => {
+        this.handleVotes();
+        this.handleVotingCodes();
+    }
+
     render() {
         return (
             <div className="container">
-                <div className="d-flex">
-                    <div className="pl-5 mr-2">
-                        <h5>Ladda upp din fil med röstkoder</h5>
-                        <input type="file" className="form-control-file" ref={this.setCodeRef} />
+                <div>
+                    <div className="row justify-content-center">
+                        <div className="ml-4 mr-4">
+                            <h4>Ladda upp din fil med röstkoder</h4>
+                            <input type="file" className="form-control-file" ref={this.setCodeRef} />
+                        </div>
                         <br></br>
-                        <button type="button" className="btn btn-success" onClick={this.handleVotingCodes}>Ladda upp</button>
+                        <div className="ml-4 mr-4">
+                            <h4>Ladda upp din fil med röster</h4>
+                            <input type="file" className="form-control-file" ref={this.setVoteRef} />
+                        </div>
                     </div>
-                    <br></br>
-                    <div className="ml-5">
-                        <h5>Ladda upp din fil med röster</h5>
-                        <input type="file" className="form-control-file" ref={this.setVoteRef} />
-                        <br></br>
-                        <button type="button" className="btn btn-success" onClick={this.handleVotes}>Ladda upp</button>
+                </div>
+                <br></br>
+                <div class="row">
+                    <div class="col text-center">
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Ladda upp</button>
                     </div>
                 </div>
             </div>
