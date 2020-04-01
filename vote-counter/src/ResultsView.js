@@ -3,6 +3,7 @@ import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 import React from "react";
 import FirebaseInstance from "./FirebaseInstance";
+import nextId from "react-id-generator";
 const Excel = require('exceljs');
 
 class VoteView extends React.Component {
@@ -12,7 +13,7 @@ class VoteView extends React.Component {
         this.firebase = new FirebaseInstance().firebase;
         this.codeWorkbook = null;
         this.voteWorkbook = null;
-        this.state = { votingResult: [], finalResults: [], resultsVisible: false }
+        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true }
         this.onClick = this.onClick.bind(this);
     }
 
@@ -80,14 +81,11 @@ class VoteView extends React.Component {
             if (referenceCodes.includes(code)) {
                 previousVoters.push(code);
                 result.push("Valid vote: " + code);
-                console.log("Valid vote: " + code)
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
                 result.push("Invalid vote, has voted more than once: " + code);
-                console.log("Invalid vote, has voted more than once: " + code)
             } else {
                 result.push("Invalid vote, not registered as a voter: " + code);
-                console.log("Invalid vote, not registered as a voter: " + code)
             }
         });
         return result;
@@ -129,7 +127,7 @@ class VoteView extends React.Component {
         const votes = this.getVotes(this.voteWorkbook);
         const results = {};
         for (let prop in votes) {
-            votes[prop].map(vote => {
+            votes[prop].forEach(vote => {
                 vote = vote.split(",");
                 vote.forEach(vote => {
                     results[vote.trim()] = (results[vote.trim()] + 1) || 1;
@@ -153,44 +151,60 @@ class VoteView extends React.Component {
         var finalResult = [];
 
         objArray.forEach(([key, value]) => {
-            if (value == 1) {
+            if (value === 1) {
                 var s = " röst"
             } else {
-                var s = " röster"
+                s = " röster"
             }
             finalResult.push(key + ": " + value + s);
         });
 
-        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true })
+        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false })
+    }
+
+    resultButton() {
+        return (
+            <div className="col text-center">
+                <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.calculateResults}>Visa resultat</button>
+            </div>
+        );
     }
 
     resultList() {
         return (
-            <div className="container">
-                <ul>
-                    {this.state.votingResult.map((codeEvaluation) =>
-                        <li>{codeEvaluation}</li>
-                    )}
-                </ul>
-                <ul>
+            <div className="container w-75">
+                <h1><b>Resultat</b></h1>
+                <ul className="list-group">
                     {this.state.finalResults.map((result) =>
-                        <li>{result}</li>
-                    )}
+                        <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                    )
+                    }
                 </ul>
-            </div>
+                <br></br>
+                <br></br>
+                <br></br>
+                <h1><b>Röstvalidering</b></h1>
+                <ul className="list-group">
+                    {this.state.votingResult.map((result) =>
+                        <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                    )
+                    }
+                </ul>
+                <div className="col text-center">
+                    <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
+                </div>
+            </div >
         );
     }
 
     render() {
         return (
-            <div className="container">
+            <div className="container w-50">
+                {this.state.resultsVisible ? this.resultList() : null}
                 <div className="row">
-                    <div className="col text-center">
-                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
-                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.calculateResults}>Visa resultat</button>
-                    </div>
-                    {this.state.resultsVisible ? this.resultList() : null}
+
                 </div>
+                {this.state.resultButtonVisible ? this.resultButton() : null}
             </div>
         );
     }
