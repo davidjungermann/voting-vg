@@ -19,10 +19,11 @@ class FileSelector extends React.Component {
         this.setVoteRef = ref => {
             this.voteFile = ref;
         }
-
+        this.firebase = null; 
         this.firebase = new FirebaseInstance().firebase;
         this.handleVotingCodes = this.handleVotingCodes.bind(this);
         this.handleVotes = this.handleVotes.bind(this);
+        this.onClick = this.onClick.bind(this);
     }
 
     handleVotingCodes = event => {

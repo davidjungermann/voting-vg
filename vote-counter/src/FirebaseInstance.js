@@ -12,7 +12,7 @@ const config = {
 
 class FirebaseInstance {
   constructor() {
-    this.firebase = firebase.initializeApp(config);
+    !firebase.apps.length ? this.firebase = firebase.initializeApp(config) : this.firebase = firebase.app();
   }
 }
 export default FirebaseInstance;
