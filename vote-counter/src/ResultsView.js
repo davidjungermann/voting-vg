@@ -12,7 +12,7 @@ class VoteView extends React.Component {
         this.firebase = new FirebaseInstance().firebase;
         this.codeWorkbook = null;
         this.voteWorkbook = null;
-        this.state = { finalResults: [] }
+        this.state = { votingResult: [], finalResults: [], resultsVisible: false }
         this.onClick = this.onClick.bind(this);
     }
 
@@ -62,9 +62,9 @@ class VoteView extends React.Component {
         return codes.slice(1);
     }
 
-    getReferenceCodes(wb) {
+    getReferenceCodes() {
         let referenceCodes = [];
-        const workbook = wb;
+        const workbook = this.codeWorkbook;
         workbook.getWorksheet().getColumn("A").eachCell(content => referenceCodes.push(content.text));
         return referenceCodes;
     }
@@ -73,18 +73,21 @@ class VoteView extends React.Component {
         const workbook = this.voteWorkbook
         let previousVoters = [];
         let codes = this.getVotingCodes(workbook);
-        let referenceCodes = this.getReferenceCodes(workbook);
+        let referenceCodes = this.getReferenceCodes();
         var result = [];
 
         codes.forEach(code => {
             if (referenceCodes.includes(code)) {
                 previousVoters.push(code);
                 result.push("Valid vote: " + code);
+                console.log("Valid vote: " + code)
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
                 result.push("Invalid vote, has voted more than once: " + code);
+                console.log("Invalid vote, has voted more than once: " + code)
             } else {
-                result.push("Invalid vote, not registered as a voter: " + code)
+                result.push("Invalid vote, not registered as a voter: " + code);
+                console.log("Invalid vote, not registered as a voter: " + code)
             }
         });
         return result;
@@ -146,9 +149,24 @@ class VoteView extends React.Component {
     testStuff = event => {
         var result = this.countVotes();
         var votingResult = this.compareVotingCodes();
-        console.log(result);
-        console.log(votingResult);
-        this.setState({ finalResults: result })
+        this.setState({ votingResult: votingResult, finalResults: Object.entries(result), resultsVisible: true })
+    }
+
+    resultList() {
+        return (
+            <div className="container">
+                <ul>
+                    {this.state.votingResult.map((number) =>
+                        <li>{number}</li>
+                    )}
+                </ul>
+                <ul>
+                    {this.state.finalResults.map((number) =>
+                        <li>{number}</li>
+                    )}
+                </ul>
+            </div>
+        );
     }
 
     render() {
@@ -159,6 +177,7 @@ class VoteView extends React.Component {
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Gör en ny röstning</button>
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.testStuff}>Visa resultat</button>
                     </div>
+                    {this.state.resultsVisible ? this.resultList() : null}
                 </div>
             </div>
         );
