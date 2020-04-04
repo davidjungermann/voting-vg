@@ -13,7 +13,7 @@ class VoteView extends React.Component {
         this.firebase = new FirebaseInstance().firebase;
         this.codeWorkbook = null;
         this.voteWorkbook = null;
-        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true }
+        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: true }
         this.onClick = this.onClick.bind(this);
     }
 
@@ -34,7 +34,7 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            alert("kuken");
+            alert("Något gick fel, försök igen!");
         });
         return workbook;
     }
@@ -51,7 +51,7 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            alert("kuken");
+            alert("Något gick fel, försök igen!");
         });
         return workbook;
     }
@@ -85,8 +85,10 @@ class VoteView extends React.Component {
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
                 invalidCodes.push("Ogiltig röst, har röstat mer än 1 gång: " + code);
+                this.setState({ isResultValid: false });
             } else {
                 invalidCodes.push("Ogiltig röst, ej registrerad: " + code);
+                this.setState({ isResultValid: false });
             }
         });
         return [result, invalidCodes];
