@@ -143,6 +143,7 @@ class VoteView extends React.Component {
     // --------------------------------------------------------------------------------------------------------------------------------------- //
 
     onClick = event => {
+        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: true });
         this.props.history.push('/file-selector');
         event.preventDefault();
     }
@@ -175,31 +176,56 @@ class VoteView extends React.Component {
     }
 
     resultList() {
-        return (
-            <div className="container w-75">
-                <h1><b>Röstvalidering</b></h1>
-                <ul className="list-group">
-                    {this.state.votingResult.map((result) =>
-                        <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
-                    )
-                    }
-                </ul>
-                <br></br>
-                <br></br>
-                <br></br>
+        if (this.state.isResultValid) {
+            return (
+                <div className="container w-75">
+                    <h1><b>Resultat</b></h1>
+                    <ul className="list-group">
+                        {this.state.finalResults.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
+                    </ul>
+                    <br></br>
+                    <br></br>
+                    <br></br>
 
-                <h1><b>Resultat</b></h1>
-                <ul className="list-group">
-                    {this.state.finalResults.map((result) =>
-                        <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
-                    )
-                    }
-                </ul>
-                <div className="col text-center">
-                    <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
-                </div>
-            </div >
-        );
+                    <h1><b>Röstvalidering</b></h1>
+                    <br></br>
+
+                    <h3><b>Antal röstande: {this.state.votingResult.length}</b></h3>
+                    <h3><b>Röstlängden: {this.getReferenceCodes().length}</b></h3>
+                    <br></br>
+                    <ul className="list-group">
+                        {this.state.votingResult.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
+                    </ul>
+
+                    <div className="col text-center">
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
+                    </div>
+                </div >
+            );
+        } else if (!this.state.isResultValid){
+            return (
+                <div className="container w-75">
+                    <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
+                    <br></br>
+                    <ul className="list-group">
+                        {this.state.votingResult.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
+                    </ul>
+                    
+                    <div className="col text-center">
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
+                    </div>
+                </div >
+            );
+        }
     }
 
     render() {
