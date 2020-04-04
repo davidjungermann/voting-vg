@@ -34,7 +34,7 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            alert("Något gick fel, försök igen!");
+            alert("Något gick fel, försök igen!" + error);
         });
         return workbook;
     }
@@ -51,7 +51,7 @@ class VoteView extends React.Component {
                 });
             });
         }).catch(function (error) {
-            alert("Något gick fel, försök igen!");
+            alert("Något gick fel, försök igen!" + error);
         });
         return workbook;
     }
