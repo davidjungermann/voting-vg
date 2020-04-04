@@ -164,7 +164,7 @@ class VoteView extends React.Component {
             finalResult.push(key + ": " + value + s);
         });
 
-        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false })
+        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false });
     }
 
     resultButton() {
@@ -208,7 +208,7 @@ class VoteView extends React.Component {
                     </div>
                 </div >
             );
-        } else if (!this.state.isResultValid){
+        } else if (!this.state.isResultValid) {
             return (
                 <div className="container w-75">
                     <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
@@ -219,7 +219,13 @@ class VoteView extends React.Component {
                         )
                         }
                     </ul>
-                    
+                    <br></br>
+                    <h5><b>Se även till att röstlängd och antalet röstande överensstämmer!</b></h5>
+                    <br></br>
+                    <li className="list-group-item">
+                        <h5>Antal röstande: {this.state.votingResult.length}</h5>
+                        <h5>Röstlängden: {this.getReferenceCodes().length}</h5>
+                    </li>
                     <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
                     </div>
