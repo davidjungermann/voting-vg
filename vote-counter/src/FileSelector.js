@@ -28,6 +28,10 @@ class FileSelector extends React.Component {
         const storageRef = this.firebase.storage().ref();
         const excelFile = storageRef.child("voting_codes.xlsx");
 
+        if (!file) {
+            alert("Välj en fil med röstkoder.")
+        }
+
         excelFile.put(file).then((snapshot) => {
             excelFile.getDownloadURL().then((url) => {
                 this.setState({
@@ -41,6 +45,10 @@ class FileSelector extends React.Component {
         const file = this.voteFile.files[0];
         const storageRef = this.firebase.storage().ref();
         const excelFile = storageRef.child("votes.xlsx");
+
+        if (!file) {
+            alert("Välj en fil med röster.")
+        }
 
         excelFile.put(file).then((snapshot) => {
             excelFile.getDownloadURL().then((url) => {
