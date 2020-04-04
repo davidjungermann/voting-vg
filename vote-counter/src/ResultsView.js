@@ -76,6 +76,7 @@ class VoteView extends React.Component {
         let codes = this.getVotingCodes(workbook);
         let referenceCodes = this.getReferenceCodes();
         var result = [];
+        var invalidCodes = [];
 
         codes.forEach(code => {
             if (referenceCodes.includes(code)) {
@@ -83,12 +84,12 @@ class VoteView extends React.Component {
                 result.push("Giltig röst: " + code);
                 referenceCodes = referenceCodes.filter(x => x !== code);
             } else if (previousVoters.includes(code)) {
-                result.push("Ogiltig röst, har röstat mer än 1 gång: " + code);
+                invalidCodes.push("Ogiltig röst, har röstat mer än 1 gång: " + code);
             } else {
-                result.push("Ogiltig röst, ej registrerad: " + code);
+                invalidCodes.push("Ogiltig röst, ej registrerad: " + code);
             }
         });
-        return result;
+        return [result, invalidCodes];
     }
 
     getElections(wb) {
@@ -146,7 +147,8 @@ class VoteView extends React.Component {
 
     calculateResults = event => {
         var result = this.countVotes();
-        var votingResult = this.compareVotingCodes();
+        var votingResult = [];
+        this.compareVotingCodes().forEach(array => array.forEach(vote => votingResult.push(vote)));
         var objArray = Object.entries(result);
         var finalResult = [];
 
@@ -173,9 +175,9 @@ class VoteView extends React.Component {
     resultList() {
         return (
             <div className="container w-75">
-                <h1><b>Resultat</b></h1>
+                <h1><b>Röstvalidering</b></h1>
                 <ul className="list-group">
-                    {this.state.finalResults.map((result) =>
+                    {this.state.votingResult.map((result) =>
                         <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
                     )
                     }
@@ -183,9 +185,10 @@ class VoteView extends React.Component {
                 <br></br>
                 <br></br>
                 <br></br>
-                <h1><b>Röstvalidering</b></h1>
+
+                <h1><b>Resultat</b></h1>
                 <ul className="list-group">
-                    {this.state.votingResult.map((result) =>
+                    {this.state.finalResults.map((result) =>
                         <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
                     )
                     }
