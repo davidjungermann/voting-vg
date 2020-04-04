@@ -15,11 +15,16 @@ class VoteView extends React.Component {
         this.voteWorkbook = null;
         this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null }
         this.onClick = this.onClick.bind(this);
+        this.clearState = this.clearState.bind(this);
     }
 
     componentDidMount() {
         this.codeWorkbook = this.initCodeFile();
         this.voteWorkbook = this.initVoteFile();
+    }
+
+    componentWillUnmount() {
+        this.clearState();
     }
 
     initVoteFile() {
@@ -146,14 +151,17 @@ class VoteView extends React.Component {
     // --------------------------------------------------------------------------------------------------------------------------------------- //
 
     onClick = event => {
-        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null });
-        this.forceUpdate();
+        this.clearState();
         this.props.history.push('/file-selector');
         event.preventDefault();
     }
 
+    clearState() {
+        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null });
+    }
+
     calculateResults = event => {
-        this.forceUpdate();
+        this.clearState();
         var result = this.countVotes();
         var votingResult = [];
         this.compareVotingCodes().forEach(array => array.forEach(vote => votingResult.push(vote)));
