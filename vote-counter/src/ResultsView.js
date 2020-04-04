@@ -13,7 +13,7 @@ class VoteView extends React.Component {
         this.firebase = new FirebaseInstance().firebase;
         this.codeWorkbook = null;
         this.voteWorkbook = null;
-        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: true }
+        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null }
         this.onClick = this.onClick.bind(this);
     }
 
@@ -91,6 +91,9 @@ class VoteView extends React.Component {
                 this.setState({ isResultValid: false });
             }
         });
+        if (invalidCodes.length === 0) {
+            this.setState({ isResultValid: true });
+        }
         return [result, invalidCodes];
     }
 
@@ -143,12 +146,14 @@ class VoteView extends React.Component {
     // --------------------------------------------------------------------------------------------------------------------------------------- //
 
     onClick = event => {
-        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: true });
+        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null });
+        this.forceUpdate();
         this.props.history.push('/file-selector');
         event.preventDefault();
     }
 
     calculateResults = event => {
+        this.forceUpdate();
         var result = this.countVotes();
         var votingResult = [];
         this.compareVotingCodes().forEach(array => array.forEach(vote => votingResult.push(vote)));
