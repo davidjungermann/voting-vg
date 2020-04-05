@@ -1,6 +1,6 @@
 {
   "name": "vg-voting",
-  "homepage": "http://davidjungermann.github.io/vg-voting",
+  "homepage": "https://davidjungermann.github.io/voting-vg/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
