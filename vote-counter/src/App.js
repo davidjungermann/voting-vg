@@ -23,7 +23,7 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Redirect exact from="/voting-vg" to="/file-selector" />
+          <Redirect exact from="/voting-vg" to="voting-vg/file-selector" />
           <div>
             <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
               <div className="text-left">

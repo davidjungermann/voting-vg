@@ -151,7 +151,7 @@ class ResultsView extends React.Component {
     // --------------------------------------------------------------------------------------------------------------------------------------- //
 
     onClick(event) {
-        this.props.history.push('/file-selector');
+        this.props.history.push("/voting-vg/file-selector");
         event.preventDefault();
     }
 

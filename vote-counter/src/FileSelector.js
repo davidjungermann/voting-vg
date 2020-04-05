@@ -78,7 +78,7 @@ class FileSelector extends React.Component {
     onClick = event => {
         this.handleVotingCodes();
         this.handleVotes();
-        this.props.history.push('/results');
+        this.props.history.push("/voting-vg/results");
         event.preventDefault();
     }
 
