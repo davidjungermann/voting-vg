@@ -198,10 +198,8 @@ class ResultsView extends React.Component {
                     <br></br>
                     <br></br>
                     <br></br>
-
                     <h1><b>Röstvalidering</b></h1>
                     <br></br>
-
                     <h3><b>Antal röstande: {this.state.votingResult.length}</b></h3>
                     <h3><b>Röstlängd: {this.state.voteLength}</b></h3>
                     <br></br>
@@ -220,7 +218,7 @@ class ResultsView extends React.Component {
         } else if (this.state.isResultValid && !voteLengthCorrect) {
             return (
                 <div className="container w-75">
-                    <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte. </b></h5>
+                    <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte.</b></h5>
                     <br></br>
                     <li className="list-group-item">
                         <h5>Antal röstande: {this.state.votingResult.length}</h5>
@@ -257,11 +255,10 @@ class ResultsView extends React.Component {
                     <ul className="list-group">
                         {this.state.votingResult.map((result) =>
                             <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
-                        )
-                        }
+                        )}
                     </ul>
                     <br></br>
-                    <h5><b>Se även till att röstlängd och antalet röstande överensstämmer!</b></h5>
+                    <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte.</b></h5>
                     <br></br>
                     <li className="list-group-item">
                         <h5>Antal röstande: {this.state.votingResult.length}</h5>
@@ -273,8 +270,6 @@ class ResultsView extends React.Component {
                 </div >
             );
         }
-
-
     }
 
     render() {
