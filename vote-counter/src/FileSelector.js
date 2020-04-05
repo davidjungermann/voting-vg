@@ -25,6 +25,16 @@ class FileSelector extends React.Component {
         this.onClick = this.onClick.bind(this);
     }
 
+    componentWillUnmount() {
+        this.setCodeRef = ref => {
+            this.codeFile = null;
+        }
+
+        this.setVoteRef = ref => {
+            this.voteFile = null;
+        }
+    }
+
     handleVotingCodes = event => {
         const file = this.codeFile.files[0];
         const storageRef = this.firebase.storage().ref();

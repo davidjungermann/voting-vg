@@ -6,14 +6,11 @@ import FirebaseInstance from "./FirebaseInstance";
 import nextId from "react-id-generator";
 const Excel = require('exceljs');
 
-class VoteView extends React.Component {
+class ResultsView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.firebase = new FirebaseInstance().firebase;
-        this.codeWorkbook = this.initCodeFile();
-        this.voteWorkbook = this.initVoteFile();
-        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0 });
+        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0, codeWorkbook: null, voteWorkbook: null });
 
         this.onClick = this.onClick.bind(this);
         this.calculateResults = this.calculateResults.bind(this);
@@ -21,8 +18,11 @@ class VoteView extends React.Component {
         this.resultButton = this.resultButton.bind(this);
     }
 
-    componentWillUnmount() {
-        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0 });
+    componentDidMount() {
+        this.firebase = new FirebaseInstance().firebase;
+        this.codeWorkbook = this.initCodeFile();
+        this.voteWorkbook = this.initVoteFile();
+        this.setState({ codeWorkbook: this.codeWorkbook, voteWorkbook: this.voteWorkbook }, this.röven);
     }
 
     initVoteFile() {
@@ -59,24 +59,23 @@ class VoteView extends React.Component {
         return workbook;
     }
 
-    getVotingCodes(wb) {
+    getVotingCodes() {
         let codes = [];
-        const workbook = wb;
+        const workbook = this.state.voteWorkbook;
         workbook.getWorksheet().getColumn("B").eachCell(content => codes.push(content.text));
         return codes.slice(1);
     }
 
     getReferenceCodes() {
         let referenceCodes = [];
-        const workbook = this.codeWorkbook;
+        const workbook = this.state.codeWorkbook;
         workbook.getWorksheet().getColumn("A").eachCell(content => referenceCodes.push(content.text));
         return referenceCodes;
     }
 
     compareVotingCodes() {
-        const workbook = this.voteWorkbook
         let previousVoters = [];
-        let codes = this.getVotingCodes(workbook);
+        let codes = this.getVotingCodes();
         let referenceCodes = this.getReferenceCodes();
         var result = [];
         var invalidCodes = [];
@@ -100,9 +99,9 @@ class VoteView extends React.Component {
         return [result, invalidCodes];
     }
 
-    getElections(wb) {
+    getElections() {
         var columnHeaders = {};
-        const workbook = wb;
+        const workbook = this.state.voteWorkbook;
         workbook.getWorksheet().getRow(1).eachCell(content => {
             if (content.text !== "Tidstämpel" && content.text !== "Valkod") {
                 columnHeaders[content.text] = [];
@@ -111,10 +110,10 @@ class VoteView extends React.Component {
         return columnHeaders;
     }
 
-    getVotes(wb) {
-        const workbook = wb;
+    getVotes() {
+        const workbook = this.state.voteWorkbook;
         let worksheet = workbook.getWorksheet();
-        let electionVotes = this.getElections(workbook);
+        let electionVotes = this.getElections();
         for (let i = 3; i <= worksheet.actualColumnCount; i++) {
             worksheet.getColumn(i).eachCell(cell => {
                 for (let prop in electionVotes) {
@@ -133,7 +132,7 @@ class VoteView extends React.Component {
     }
 
     countVotes() {
-        const votes = this.getVotes(this.voteWorkbook);
+        const votes = this.getVotes();
         const results = {};
         for (let prop in votes) {
             votes[prop].forEach(vote => {
@@ -144,6 +143,10 @@ class VoteView extends React.Component {
             });
         }
         return results;
+    }
+
+    röven() {
+        console.log(this.state);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------- //
@@ -199,7 +202,7 @@ class VoteView extends React.Component {
                     <br></br>
 
                     <h3><b>Antal röstande: {this.state.votingResult.length}</b></h3>
-                    <h3><b>Röstlängden: {this.state.voteLength}</b></h3>
+                    <h3><b>Röstlängd: {this.state.voteLength}</b></h3>
                     <br></br>
                     <ul className="list-group">
                         {this.state.votingResult.map((result) =>
@@ -229,7 +232,7 @@ class VoteView extends React.Component {
                     <br></br>
                     <li className="list-group-item">
                         <h5>Antal röstande: {this.state.votingResult.length}</h5>
-                        <h5>Röstlängden: {this.state.voteLength}</h5>
+                        <h5>Röstlängd: {this.state.voteLength}</h5>
                     </li>
                     <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
@@ -252,4 +255,4 @@ class VoteView extends React.Component {
     }
 }
 
-export default VoteView;
+export default ResultsView;
