@@ -14,16 +14,16 @@ class App extends React.Component {
   }
   composeFileView() {
     return (params) => <FileSelector {...params} />;
-  }
+  } 
 
   render() {
     const votes = this.composeVoteView();
     const files = this.composeFileView();
 
     return (
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Switch>
-          <Redirect exact from="/voting-vg" to="/file-selector" />
+          <Redirect exact from="/" to="/file-selector" />
           <div>
             <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
               <div className="text-left">
