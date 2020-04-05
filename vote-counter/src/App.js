@@ -23,7 +23,7 @@ class App extends React.Component {
     return (
       <Router>
         <Switch>
-          <Redirect exact from="/" to="/file-selector" />
+          <Redirect exact from="/voting-vg" to="/file-selector" />
           <div>
             <div className="jumbotron text-center" style={{ "paddingTop": "10px", "paddingBottom": "10px" }}>
               <div className="text-left">
@@ -33,10 +33,10 @@ class App extends React.Component {
               <p className="lead">Västgöta Nation</p>
             </div>
             <div className="container w-50">
-              <Route path="/file-selector" render={files}></Route>
+              <Route path="/voting-vg/file-selector" render={files}></Route>
             </div>
             <div>
-              <Route path="/results" render={votes}></Route>
+              <Route path="/voting-vg/results" render={votes}></Route>
             </div>
           </div>
         </Switch>
