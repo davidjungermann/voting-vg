@@ -10,7 +10,7 @@ class ResultsView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0, codeWorkbook: null, voteWorkbook: null });
+        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0, codeWorkbook: null, voteWorkbook: null, isFetched: false });
 
         this.onClick = this.onClick.bind(this);
         this.calculateResults = this.calculateResults.bind(this);
@@ -20,9 +20,8 @@ class ResultsView extends React.Component {
 
     componentDidMount() {
         this.firebase = new FirebaseInstance().firebase;
-        this.codeWorkbook = this.initCodeFile();
-        this.voteWorkbook = this.initVoteFile();
-        this.setState({ codeWorkbook: this.codeWorkbook, voteWorkbook: this.voteWorkbook }, this.röven);
+        this.initCodeFile();
+        this.initVoteFile();
     }
 
     initVoteFile() {
@@ -39,7 +38,7 @@ class ResultsView extends React.Component {
         }).catch(function (error) {
             alert("Något gick fel, försök igen!" + error);
         });
-        return workbook;
+        this.setState({ voteWorkbook: workbook }, this.röven);
     }
 
     initCodeFile() {
@@ -56,7 +55,7 @@ class ResultsView extends React.Component {
         }).catch(function (error) {
             alert("Något gick fel, försök igen!" + error);
         });
-        return workbook;
+        this.setState({ codeWorkbook: workbook }, this.röven);
     }
 
     getVotingCodes() {
@@ -172,7 +171,7 @@ class ResultsView extends React.Component {
             }
             finalResult.push(key + ": " + value + s);
         });
-        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false, voteLength: this.getReferenceCodes().length });
+        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false, voteLength: this.getReferenceCodes().length }, this.röven);
     }
 
     resultButton() {
