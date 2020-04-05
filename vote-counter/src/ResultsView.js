@@ -183,7 +183,9 @@ class ResultsView extends React.Component {
     }
 
     resultList() {
-        if (this.state.isResultValid) {
+        var voteLengthCorrect = this.state.voteLength === this.state.votingResult.length
+
+        if (this.state.isResultValid && voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h1><b>Resultat</b></h1>
@@ -215,7 +217,39 @@ class ResultsView extends React.Component {
                     </div>
                 </div >
             );
-        } else if (!this.state.isResultValid) {
+        } else if (this.state.isResultValid && !voteLengthCorrect) {
+            return (
+                <div className="container w-75">
+                    <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte. </b></h5>
+                    <br></br>
+                    <li className="list-group-item">
+                        <h5>Antal röstande: {this.state.votingResult.length}</h5>
+                        <h5>Röstlängd: {this.state.voteLength}</h5>
+                    </li>
+                    <div className="col text-center">
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
+                    </div>
+                </div >
+            );
+        }
+
+        else if (!this.state.isResultValid && voteLengthCorrect) {
+            return (
+                <div className="container w-75">
+                    <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
+                    <br></br>
+                    <ul className="list-group">
+                        {this.state.votingResult.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
+                    </ul>
+                    <div className="col text-center">
+                        <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
+                    </div>
+                </div >
+            );
+        } else if (!this.state.isResultValid && !voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
@@ -239,6 +273,8 @@ class ResultsView extends React.Component {
                 </div >
             );
         }
+
+
     }
 
     render() {
