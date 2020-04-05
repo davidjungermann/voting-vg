@@ -5,8 +5,10 @@ import "bootstrap/dist/js/bootstrap.js";
 import 'mdbreact/dist/css/mdb.css';
 import React from 'react';
 import FirebaseInstance from "./FirebaseInstance";
+import withUnmounted from '@ishawnwang/withunmounted'
 
 class FileSelector extends React.Component {
+    hasUnmounted = false;
     constructor(props) {
         super(props);
 
@@ -34,9 +36,11 @@ class FileSelector extends React.Component {
 
         excelFile.put(file).then((snapshot) => {
             excelFile.getDownloadURL().then((url) => {
-                this.setState({
-                    votingCodesFile: url
-                });
+                if (!this.hasUnmounted) {
+                    this.setState({
+                        votingCodesFile: url
+                    });
+                }
             });
         });
     }
@@ -52,9 +56,11 @@ class FileSelector extends React.Component {
 
         excelFile.put(file).then((snapshot) => {
             excelFile.getDownloadURL().then((url) => {
-                this.setState({
-                    votesFile: url
-                });
+                if (!this.hasUnmounted) {
+                    this.setState({
+                        votesFile: url
+                    });
+                }
             });
         });
     }
@@ -93,4 +99,4 @@ class FileSelector extends React.Component {
     }
 }
 
-export default FileSelector;
+export default withUnmounted(FileSelector);

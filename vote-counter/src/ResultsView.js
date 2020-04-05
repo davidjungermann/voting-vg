@@ -11,18 +11,18 @@ class VoteView extends React.Component {
     constructor(props) {
         super(props);
         this.firebase = new FirebaseInstance().firebase;
-        this.codeWorkbook = null;
-        this.voteWorkbook = null;
-        this.state = { votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null }
+        this.codeWorkbook = this.initCodeFile();
+        this.voteWorkbook = this.initVoteFile();
+        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0 });
+
         this.onClick = this.onClick.bind(this);
         this.calculateResults = this.calculateResults.bind(this);
         this.resultList = this.resultList.bind(this);
         this.resultButton = this.resultButton.bind(this);
     }
 
-    componentDidMount() {
-        this.codeWorkbook = this.initCodeFile();
-        this.voteWorkbook = this.initVoteFile();
+    componentWillUnmount() {
+        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0 });
     }
 
     initVoteFile() {
@@ -155,7 +155,6 @@ class VoteView extends React.Component {
 
 
     calculateResults() {
-        this.setState({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null })
         var result = this.countVotes();
         var votingResult = [];
         this.compareVotingCodes().forEach(array => array.forEach(vote => votingResult.push(vote)));
@@ -170,8 +169,7 @@ class VoteView extends React.Component {
             }
             finalResult.push(key + ": " + value + s);
         });
-
-        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false });
+        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false, voteLength: this.getReferenceCodes().length });
     }
 
     resultButton() {
@@ -201,7 +199,7 @@ class VoteView extends React.Component {
                     <br></br>
 
                     <h3><b>Antal röstande: {this.state.votingResult.length}</b></h3>
-                    <h3><b>Röstlängden: {this.getReferenceCodes().length}</b></h3>
+                    <h3><b>Röstlängden: {this.state.voteLength}</b></h3>
                     <br></br>
                     <ul className="list-group">
                         {this.state.votingResult.map((result) =>
@@ -231,7 +229,7 @@ class VoteView extends React.Component {
                     <br></br>
                     <li className="list-group-item">
                         <h5>Antal röstande: {this.state.votingResult.length}</h5>
-                        <h5>Röstlängden: {this.getReferenceCodes().length}</h5>
+                        <h5>Röstlängden: {this.state.voteLength}</h5>
                     </li>
                     <div className="col text-center">
                         <button type="button" className="btn btn-success m-4 btn-lg" onClick={this.onClick}>Genomför en ny röstning</button>
