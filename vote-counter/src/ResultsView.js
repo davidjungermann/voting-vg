@@ -137,15 +137,19 @@ class ResultsView extends React.Component {
             votes[prop].forEach(vote => {
                 vote = vote.split(",");
                 vote.forEach(vote => {
-                    results[vote.trim()] = (results[vote.trim()] + 1) || 1;
+                    vote = vote.trim();
+                    if (vote.endsWith("*")) {
+                        vote = vote.substring(0, vote.length - 1);
+
+                        if (vote.endsWith("*")) {
+                            vote = vote.substring(0, vote.length - 1);
+                        }
+                    }
+                    results[vote] = (results[vote] + 1) || 1;
                 });
             });
         }
         return results;
-    }
-
-    röven() {
-        console.log(this.state);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------------- //
