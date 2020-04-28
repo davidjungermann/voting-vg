@@ -20,6 +20,7 @@ class ResultsView extends React.Component {
 
     componentDidMount() {
         this.firebase = new FirebaseInstance().firebase;
+        
         this.initCodeFile();
         this.initVoteFile();
     }
