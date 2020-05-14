@@ -131,6 +131,10 @@ class ResultsView extends React.Component {
         return electionVotes;
     }
 
+    removeAsterisk(vote) {
+
+    }
+
     countVotes() {
         const votes = this.getVotes();
         const results = {};
@@ -140,11 +144,7 @@ class ResultsView extends React.Component {
                 vote.forEach(vote => {
                     vote = vote.trim();
                     if (vote.endsWith("*")) {
-                        vote = vote.substring(0, vote.length - 1);
-
-                        if (vote.endsWith("*")) {
-                            vote = vote.substring(0, vote.length - 1);
-                        }
+                        vote = vote.replace(/\*/g, '');
                     }
                     results[vote] = (results[vote] + 1) || 1;
                 });
