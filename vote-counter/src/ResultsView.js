@@ -131,10 +131,6 @@ class ResultsView extends React.Component {
         return electionVotes;
     }
 
-    removeAsterisk(vote) {
-
-    }
-
     countVotes() {
         const votes = this.getVotes();
         const results = {};
