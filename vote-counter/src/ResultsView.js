@@ -31,7 +31,6 @@ class ResultsView extends React.Component {
 
   componentDidMount() {
     this.firebase = new FirebaseInstance().firebase;
-
     this.initCodeFile();
     this.initVoteFile();
   }
@@ -113,7 +112,6 @@ class ResultsView extends React.Component {
     } else {
       this.setState({ voteLengthCorrect: true });
     }
-    console.log(nonVoters);
     return nonVoters;
   }
 
