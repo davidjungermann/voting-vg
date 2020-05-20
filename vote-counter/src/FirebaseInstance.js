@@ -7,12 +7,14 @@ const config = {
   projectId: "vg-voting-83c84",
   storageBucket: "vg-voting-83c84.appspot.com",
   messagingSenderId: "14819118797",
-  appId: "1:14819118797:web:6a3006215809c1a8ffe384"
+  appId: "1:14819118797:web:6a3006215809c1a8ffe384",
 };
 
 class FirebaseInstance {
   constructor() {
-    !firebase.apps.length ? this.firebase = firebase.initializeApp(config) : this.firebase = firebase.app();
+    !firebase.apps.length
+      ? (this.firebase = firebase.initializeApp(config))
+      : (this.firebase = firebase.app());
   }
 }
 export default FirebaseInstance;
