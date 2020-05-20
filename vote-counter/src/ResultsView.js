@@ -10,7 +10,17 @@ class ResultsView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = ({ votingResult: [], finalResults: [], resultsVisible: false, resultButtonVisible: true, isResultValid: null, voteLength: 0, codeWorkbook: null, voteWorkbook: null, isFetched: false });
+        this.state = ({ votingResult: [], 
+                        finalResults: [], 
+                        resultsVisible: false, 
+                        resultButtonVisible: true, 
+                        isResultValid: null, 
+                        voteLength: 0, 
+                        voteLengthCorrect: null, 
+                        codeWorkbook: null, 
+                        voteWorkbook: null, 
+                        isFetched: false,
+                        voteLengthResult: null });
 
         this.onClick = this.onClick.bind(this);
         this.calculateResults = this.calculateResults.bind(this);
@@ -20,7 +30,7 @@ class ResultsView extends React.Component {
 
     componentDidMount() {
         this.firebase = new FirebaseInstance().firebase;
-        
+
         this.initCodeFile();
         this.initVoteFile();
     }
@@ -39,7 +49,7 @@ class ResultsView extends React.Component {
         }).catch(function (error) {
             alert("Något gick fel, försök igen!" + error);
         });
-        this.setState({ voteWorkbook: workbook }, this.röven);
+        this.setState({ voteWorkbook: workbook });
     }
 
     initCodeFile() {
@@ -56,7 +66,7 @@ class ResultsView extends React.Component {
         }).catch(function (error) {
             alert("Något gick fel, försök igen!" + error);
         });
-        this.setState({ codeWorkbook: workbook }, this.röven);
+        this.setState({ codeWorkbook: workbook });
     }
 
     getVotingCodes() {
@@ -71,6 +81,25 @@ class ResultsView extends React.Component {
         const workbook = this.state.codeWorkbook;
         workbook.getWorksheet().getColumn("A").eachCell(content => referenceCodes.push(content.text));
         return referenceCodes;
+    }
+
+    compareVoteLength() {
+        var nonVoters = [];
+        let codes = this.getVotingCodes();
+        let referenceCodes = this.getReferenceCodes();
+        if (referenceCodes.length > codes.length) {
+            this.setState({ isResultValid: false, voteLengthCorrect: false });
+            let difference = referenceCodes.filter(x => !codes.includes(x));
+            difference.forEach(code => {
+                nonVoters.push("Registrerad, men har ej röstat: " + code);
+            });
+        } else if (referenceCodes.length < codes.length) {
+            this.setState({ voteLengthCorrect: false });
+        } else {
+            this.setState({ voteLengthCorrect: true });
+        }
+        console.log(nonVoters);
+        return nonVoters;
     }
 
     compareVotingCodes() {
@@ -171,7 +200,12 @@ class ResultsView extends React.Component {
             }
             finalResult.push(key + ": " + value + s);
         });
-        this.setState({ votingResult: votingResult, finalResults: finalResult, resultsVisible: true, resultButtonVisible: false, voteLength: this.getReferenceCodes().length }, this.röven);
+        this.setState({ votingResult: votingResult, 
+                        finalResults: finalResult, 
+                        resultsVisible: true, 
+                        resultButtonVisible: false, 
+                        voteLength: this.getReferenceCodes().length, 
+                        voteLengthResult: this.compareVoteLength() });
     }
 
     resultButton() {
@@ -183,9 +217,8 @@ class ResultsView extends React.Component {
     }
 
     resultList() {
-        var voteLengthCorrect = this.state.voteLength === this.state.votingResult.length
 
-        if (this.state.isResultValid && voteLengthCorrect) {
+        if (this.state.isResultValid && this.state.voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h1><b>Resultat</b></h1>
@@ -215,11 +248,17 @@ class ResultsView extends React.Component {
                     </div>
                 </div >
             );
-        } else if (this.state.isResultValid && !voteLengthCorrect) {
+        } else if (this.state.isResultValid && !this.state.voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte.</b></h5>
                     <br></br>
+                    <ul className="list-group">
+                        {this.state.voteLengthResult.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
+                    </ul>
                     <li className="list-group-item">
                         <h5>Antal röstande: {this.state.votingResult.length}</h5>
                         <h5>Röstlängd: {this.state.voteLength}</h5>
@@ -231,7 +270,7 @@ class ResultsView extends React.Component {
             );
         }
 
-        else if (!this.state.isResultValid && voteLengthCorrect) {
+        else if (!this.state.isResultValid && this.state.voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
@@ -247,7 +286,7 @@ class ResultsView extends React.Component {
                     </div>
                 </div >
             );
-        } else if (!this.state.isResultValid && !voteLengthCorrect) {
+        } else if (!this.state.isResultValid && !this.state.voteLengthCorrect) {
             return (
                 <div className="container w-75">
                     <h5><b>Röstningen är inte giltig. Ta bort ogiltiga röster ur Excel-arket och ladda upp igen: </b></h5>
@@ -256,6 +295,13 @@ class ResultsView extends React.Component {
                         {this.state.votingResult.map((result) =>
                             <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
                         )}
+                    </ul>
+                    <br></br>
+                    <ul className="list-group">
+                        {this.state.voteLengthResult.map((result) =>
+                            <li key={nextId()} className="list-group-item"> {<h3> {result}</h3>}</li>
+                        )
+                        }
                     </ul>
                     <br></br>
                     <h5><b>Röstningen är inte giltig. Röstlängd och antalet röster stämmer överensstämmer inte.</b></h5>
