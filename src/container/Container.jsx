@@ -1,10 +1,10 @@
 import React from "react";
-import FileSelector from "../FileSelector"
+import FileSelector from "../fileselector/FileSelector.jsx"
 import "./Container.css";
 class Container extends React.Component {
   render() {
     return (
-      <div>
+      <div className="container-root">
         <div
           className="jumbotron text-center"
         >

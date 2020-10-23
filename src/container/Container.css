@@ -1,7 +1,7 @@
 .jumbotron {
     padding-top: 8px;
     padding-bottom: 8px;
-    background-color: #ffe05d;
+    background-color: #EBCB8B;
 }
 
 .display-4 {
@@ -10,4 +10,8 @@
 
 .lead {
     color: #646464;
+}
+
+.container-root {
+    text-align: center;
 }

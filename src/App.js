@@ -5,9 +5,10 @@ import {
   Switch,
   Redirect,
 } from "react-router-dom";
-import FileSelector from "./FileSelector.jsx";
+import FileSelector from "./fileselector/FileSelector.jsx";
 import ResultsView from "./ResultsView.jsx";
 import Container from "./container/Container.jsx";
+import "./App.css";
 
 class App extends React.Component {
   composeVoteView() {
