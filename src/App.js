@@ -7,7 +7,7 @@ import {
 } from "react-router-dom";
 import FileSelector from "./FileSelector.jsx";
 import ResultsView from "./ResultsView.jsx";
-import Container from "./Container.jsx";
+import Container from "./container/Container.jsx";
 
 class App extends React.Component {
   composeVoteView() {

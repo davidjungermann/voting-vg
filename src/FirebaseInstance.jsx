@@ -1,5 +1,5 @@
-import firebase from "firebase";
-require('dotenv').config();
+import firebase from "firebase/app";
+require("dotenv").config();
 
 const config = {
   apiKey: process.env.API_KEY,
@@ -8,7 +8,7 @@ const config = {
   projectId: process.env.PROJECT_ID,
   storageBucket: "vg-voting-83c84.appspot.com",
   messagingSenderId: process.env.MESSAGING_SENDER_ID,
-  appId: process.env.APP_ID
+  appId: process.env.APP_ID,
 };
 
 class FirebaseInstance {
