@@ -1,12 +1,25 @@
 import FirebaseInstance from "./FirebaseInstance.jsx";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 export default function FileSelector() {
   const [files, setFiles] = useState([]);
   const [voteCodeFileUrl, setVoteCodeFileUrl] = useState("");
   const [voteFileUrl, setVoteFileUrl] = useState("");
+  const [enabled, setEnabled] = useState(false);
+
+  /* Singleton Firebase instance */
   const firebase = new FirebaseInstance().firebase;
 
+  /* useEffect hook that enables submit button if two files are provided. */
+  useEffect(() => {
+    if (files.length === 0) {
+      setEnabled(false);
+    } else if (files.length === 2) {
+      setEnabled(true);
+    }
+  }, [files]);
+
+  /* Called when each file is provided, set current state for component. */
   const handleFileUpload = (event) => {
     event.preventDefault();
     let id = event.target.id;
@@ -14,6 +27,7 @@ export default function FileSelector() {
     setFiles([...files, { file_id: id, uploaded_file: file }]);
   };
 
+  /* Called when submitting. Pushes files to Firebase Storage, and provides a download URL. */
   const handleSubmit = (event) => {
     event.preventDefault();
     const storageRef = firebase.storage().ref();
@@ -33,6 +47,7 @@ export default function FileSelector() {
           });
         });
       }
+      setFiles([]);
     });
   };
 
@@ -46,7 +61,13 @@ export default function FileSelector() {
         <span>Röster</span>
         <input id={1} accept=".xlsx" type="file" onChange={handleFileUpload} />
       </div>
-      <button type="submit">Submit</button>
+      {enabled ? (
+        <button type="submit">Submit</button>
+      ) : (
+        <button disabled type="submit">
+          Submit
+        </button>
+      )}
     </form>
   );
 }
