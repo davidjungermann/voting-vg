@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FileSelector from "../fileselector/FileSelector.jsx";
+import NewResultsView from "../NewResultsView.jsx";
 import "./Container.css";
 
 export default function Container() {
@@ -14,7 +15,7 @@ export default function Container() {
         <p className="lead">Västgöta Nation</p>
       </div>
       {submitted ? (
-        <div className="submit-btn-root">HEJ</div>
+        <NewResultsView voteCodeFile={voteCodeFile} voteFile={voteFile}></NewResultsView>
       ) : (
         <FileSelector
           setSubmitted={setSubmitted}

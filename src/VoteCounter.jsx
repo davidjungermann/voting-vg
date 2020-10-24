@@ -61,7 +61,7 @@ async function getVotes() {
   const workbook = await initWorkbook("../../test.xlsx");
   let worksheet = workbook.getWorksheet();
   let electionVotes = await getElections();
-  for (i = 3; i <= worksheet.actualColumnCount; i++) {
+  for (let i = 3; i <= worksheet.actualColumnCount; i++) {
     worksheet.getColumn(i).eachCell((cell) => {
       for (let prop in electionVotes) {
         if (cell.text.startsWith(prop)) {

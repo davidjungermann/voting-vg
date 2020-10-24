@@ -62,7 +62,7 @@ export default function FileSelector(props) {
             className="file-input"
             onChange={handleFileUpload}
           />
-          <label for={0}>{selectedVoteCodeFile}</label>
+          <label htmlFor={0}>{selectedVoteCodeFile}</label>
         </div>
         <div className="upload-btn">
           <h3 className="file-upload-header">Röster</h3>
@@ -73,7 +73,7 @@ export default function FileSelector(props) {
             className="file-input"
             onChange={handleFileUpload}
           />
-          <label for={1}>{selectedVoteFile}</label>
+          <label htmlFor={1}>{selectedVoteFile}</label>
         </div>
         {enabled ? (
           <div className="submit-btn-root">
