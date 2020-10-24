@@ -33,5 +33,25 @@ export default function NewResultsView(props) {
     console.log(workbook);
   };
 
+  const getVotingCodes = () => {
+    let codes = [];
+    const workbook = codeWorkbook;
+    workbook
+      .getWorksheet()
+      .getColumn("B")
+      .eachCell((content) => codes.push(content.text));
+    return codes.slice(1);
+  };
+
+  const getReferenceCodes = () => {
+    let referenceCodes = [];
+    const workbook = voteWorkbook;
+    workbook
+      .getWorksheet()
+      .getColumn("A")
+      .eachCell((content) => referenceCodes.push(content.text));
+    return referenceCodes;
+  };
+
   return <div>Hej!</div>;
 }
