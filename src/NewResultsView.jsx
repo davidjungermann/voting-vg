@@ -374,9 +374,8 @@ export default function NewResultsView(props) {
   return (
     <div className="container w-50">
       {resultVisible ? resultList() : null}
-      {console.log(calculateResults())}
       <div className="row"></div>
-      {resultButton()}
+      {resultButtonVisible ? this.resultButton() : null}
     </div>
   );
 }
