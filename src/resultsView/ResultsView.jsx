@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import nextId from "react-id-generator";
 const Excel = require("exceljs");
 
+/* Renders the Results based on outcome. TODO: JSX needs abstraction and reformatting. */
+
 export default function NewResultsView(props) {
   const [votingResult, setVotingResult] = useState([]);
   const [finalResult, setFinalResult] = useState([]);
