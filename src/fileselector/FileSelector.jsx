@@ -1,11 +1,8 @@
-import FirebaseInstance from "../FirebaseInstance.jsx";
 import React, { useState, useEffect } from "react";
 import "./FileSelector.css";
 
 export default function FileSelector(props) {
   const [files, setFiles] = useState([]);
-  const [voteCodeFileUrl, setVoteCodeFileUrl] = useState("");
-  const [voteFileUrl, setVoteFileUrl] = useState("");
   const [enabled, setEnabled] = useState(false);
   const [selectedVoteCodeFile, setSelectedVoteCodeFile] = useState(
     "Välj en fil med röstkoder"
@@ -13,9 +10,6 @@ export default function FileSelector(props) {
   const [selectedVoteFile, setSelectedVoteFile] = useState(
     "Välj en fil med röster"
   );
-
-  /* Singleton Firebase instance */
-  const firebase = new FirebaseInstance().firebase;
 
   /* useEffect hook that enables submit button if two files are provided. */
   useEffect(() => {
@@ -42,7 +36,6 @@ export default function FileSelector(props) {
   /* Called when submitting. Pushes files to Firebase Storage, and provides a download URL. */
   const handleSubmit = (event) => {
     event.preventDefault();
-    const storageRef = firebase.storage().ref();
     files.forEach((file) => {
       if (file?.file_id === "0") {
         props.setVoteCodeFile(file?.uploaded_file);

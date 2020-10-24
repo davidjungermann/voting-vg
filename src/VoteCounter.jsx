@@ -1,7 +1,7 @@
-const Excel = require("exceljs");
+import { Workbook } from "exceljs";
 
 async function initWorkbook(path) {
-  let voting_workbook = new Excel.Workbook();
+  let voting_workbook = new Workbook();
   return await voting_workbook.xlsx.readFile(path);
 }
 

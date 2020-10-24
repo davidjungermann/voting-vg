@@ -13,14 +13,15 @@ export default function Container() {
         <h1 className="display-4">Rösträknare </h1>
         <p className="lead">Västgöta Nation</p>
       </div>
-      <FileSelector
-        setSubmitted={setSubmitted}
-        setVoteCodeFile={setVoteCodeFile}
-        setVoteFile={setVoteFile}
-      ></FileSelector>
-      {console.log(submitted)}
-      {console.log(voteCodeFile)}
-      {console.log(voteFile)}
+      {submitted ? (
+        <div className="submit-btn-root">HEJ</div>
+      ) : (
+        <FileSelector
+          setSubmitted={setSubmitted}
+          setVoteCodeFile={setVoteCodeFile}
+          setVoteFile={setVoteFile}
+        ></FileSelector>
+      )}
     </div>
   );
 }
