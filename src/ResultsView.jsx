@@ -1,5 +1,4 @@
 import React from "react";
-import FirebaseInstance from "./FirebaseInstance";
 import nextId from "react-id-generator";
 const Excel = require("exceljs");
 
@@ -27,50 +26,26 @@ class ResultsView extends React.Component {
   }
 
   componentDidMount() {
-    this.firebase = new FirebaseInstance().firebase;
     this.initCodeFile();
     this.initVoteFile();
   }
 
   initVoteFile() {
     var workbook = new Excel.Workbook();
-    const storageRef = this.firebase.storage().ref();
-    storageRef
-      .child("votes.xlsx")
-      .getDownloadURL()
-      .then(function (url) {
-        fetch(url).then((result) => {
-          result.blob().then((file) => {
-            file.arrayBuffer().then((buffer) => {
-              workbook.xlsx.load(buffer);
-            });
-          });
-        });
-      })
-      .catch(function (error) {
-        alert("Något gick fel, försök igen!" + error);
-      });
+    const voteFile = this.props.voteFile;
+    console.log(voteFile);
+    voteFile.arrayBuffer().then((buffer) => {
+      workbook.xlsx.load(buffer);
+    });
     this.setState({ voteWorkbook: workbook });
   }
 
   initCodeFile() {
     var workbook = new Excel.Workbook();
-    const storageRef = this.firebase.storage().ref();
-    storageRef
-      .child("voting_codes.xlsx")
-      .getDownloadURL()
-      .then(function (url) {
-        fetch(url).then((result) => {
-          result.blob().then((file) => {
-            file.arrayBuffer().then((buffer) => {
-              workbook.xlsx.load(buffer);
-            });
-          });
-        });
-      })
-      .catch(function (error) {
-        alert("Något gick fel, försök igen!" + error);
-      });
+    const voteCodeFile = this.props.voteCodeFile;
+    voteCodeFile.arrayBuffer().then((buffer) => {
+      workbook.xlsx.load(buffer);
+    });
     this.setState({ codeWorkbook: workbook });
   }
 
@@ -194,7 +169,7 @@ class ResultsView extends React.Component {
   // --------------------------------------------------------------------------------------------------------------------------------------- //
 
   onClick(event) {
-    this.props.history.push("/file-selector");
+    this.props.setSubmitted(false);
     event.preventDefault();
   }
 

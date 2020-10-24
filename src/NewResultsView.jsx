@@ -39,7 +39,6 @@ export default function NewResultsView(props) {
   };
 
   const getVotingCodes = () => {
-    initCodeFile();
     let codes = [];
     const workbook = codeWorkbook;
     workbook
@@ -375,7 +374,7 @@ export default function NewResultsView(props) {
     <div className="container w-50">
       {resultVisible ? resultList() : null}
       <div className="row"></div>
-      {resultButtonVisible ? this.resultButton() : null}
+      {resultButtonVisible ? resultButton() : null}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import FileSelector from "../fileselector/FileSelector.jsx";
 import NewResultsView from "../NewResultsView.jsx";
+import ResultsView from "../ResultsView.jsx";
 import "./Container.css";
 
 export default function Container() {
@@ -15,11 +16,11 @@ export default function Container() {
         <p className="lead">Västgöta Nation</p>
       </div>
       {submitted ? (
-        <NewResultsView
+        <ResultsView
           setSubmitted={setSubmitted}
           voteCodeFile={voteCodeFile}
           voteFile={voteFile}
-        ></NewResultsView>
+        ></ResultsView>
         
       ) : (
         <FileSelector
