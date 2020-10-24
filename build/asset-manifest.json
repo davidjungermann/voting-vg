@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/voting-vg/static/css/main.c12befbc.chunk.css",
+    "main.js": "/voting-vg/static/js/main.451ced09.chunk.js",
+    "main.js.map": "/voting-vg/static/js/main.451ced09.chunk.js.map",
+    "runtime-main.js": "/voting-vg/static/js/runtime-main.28e234f0.js",
+    "runtime-main.js.map": "/voting-vg/static/js/runtime-main.28e234f0.js.map",
+    "static/css/2.6414bb7b.chunk.css": "/voting-vg/static/css/2.6414bb7b.chunk.css",
+    "static/js/2.dc9120bc.chunk.js": "/voting-vg/static/js/2.dc9120bc.chunk.js",
+    "static/js/2.dc9120bc.chunk.js.map": "/voting-vg/static/js/2.dc9120bc.chunk.js.map",
+    "index.html": "/voting-vg/index.html",
+    "precache-manifest.42040d49424bf74d2e62303b5aaca3e8.js": "/voting-vg/precache-manifest.42040d49424bf74d2e62303b5aaca3e8.js",
+    "service-worker.js": "/voting-vg/service-worker.js",
+    "static/css/2.6414bb7b.chunk.css.map": "/voting-vg/static/css/2.6414bb7b.chunk.css.map",
+    "static/css/main.c12befbc.chunk.css.map": "/voting-vg/static/css/main.c12befbc.chunk.css.map",
+    "static/js/2.dc9120bc.chunk.js.LICENSE.txt": "/voting-vg/static/js/2.dc9120bc.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.28e234f0.js",
+    "static/css/2.6414bb7b.chunk.css",
+    "static/js/2.dc9120bc.chunk.js",
+    "static/css/main.c12befbc.chunk.css",
+    "static/js/main.451ced09.chunk.js"
+  ]
+}
