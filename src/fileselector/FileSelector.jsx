@@ -29,9 +29,9 @@ export default function FileSelector() {
     let file = event.target.files[0];
     setFiles([...files, { file_id: id, uploaded_file: file }]);
     if(id === "0") {
-      setSelectedVoteCodeFile(file.name)
+      setSelectedVoteCodeFile(file?.name)
     } else {
-      setSelectedVoteFile(file.name)
+      setSelectedVoteFile(file?.name)
     }
   };
 
@@ -40,22 +40,24 @@ export default function FileSelector() {
     event.preventDefault();
     const storageRef = firebase.storage().ref();
     files.forEach((file) => {
-      if (file.file_id === "0") {
+      if (file?.file_id === "0") {
         let excelFile = storageRef.child("voting_codes.xlsx");
-        excelFile.put(file.uploaded_file).then(() => {
+        excelFile.put(file?.uploaded_file).then(() => {
           excelFile.getDownloadURL().then((url) => {
             setVoteCodeFileUrl(url);
           });
         });
       } else {
         let excelFile = storageRef.child("votes.xlsx");
-        excelFile.put(file.uploaded_file).then(() => {
+        excelFile.put(file?.uploaded_file).then(() => {
           excelFile.getDownloadURL().then((url) => {
             setVoteFileUrl(url);
           });
         });
       }
       setFiles([]);
+      setSelectedVoteCodeFile("Välj en fil med röstkoder");
+      setSelectedVoteFile("Välj en fil med röster");
     });
   };
 
