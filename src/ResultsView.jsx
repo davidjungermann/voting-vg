@@ -1,94 +1,85 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import nextId from "react-id-generator";
 const Excel = require("exceljs");
 
-class ResultsView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      votingResult: [],
-      finalResults: [],
-      resultsVisible: false,
-      resultButtonVisible: true,
-      isResultValid: null,
-      voteLength: 0,
-      voteLengthCorrect: null,
-      codeWorkbook: null,
-      voteWorkbook: null,
-      voteLengthResult: null,
-    };
+export default function NewResultsView(props) {
+  const [votingResult, setVotingResult] = useState([]);
+  const [finalResult, setFinalResult] = useState([]);
+  const [resultVisible, setResultVisible] = useState(false);
+  const [resultButtonVisible, setResultButtonVisible] = useState(true);
+  const [resultValid, setResultValid] = useState(null);
+  const [voteLength, setVoteLength] = useState(0);
+  const [voteLengthCorrect, setVoteLengthCorrect] = useState(null);
+  const [codeWorkbook, setCodeWorkbook] = useState(null);
+  const [voteWorkbook, setVoteWorkbook] = useState(null);
+  const [voteLengthResult, setVoteLengthResult] = useState(null);
 
-    this.onClick = this.onClick.bind(this);
-    this.calculateResults = this.calculateResults.bind(this);
-    this.resultList = this.resultList.bind(this);
-    this.resultButton = this.resultButton.bind(this);
-  }
+  useEffect(() => {
+    initCodeFile();
+    initVoteFile();
+  }, []);
 
-  componentDidMount() {
-    this.initCodeFile();
-    this.initVoteFile();
-  }
-
-  initVoteFile() {
+  const initVoteFile = () => {
     var workbook = new Excel.Workbook();
-    const voteFile = this.props.voteFile;
+    const voteFile = props.voteFile;
     voteFile.arrayBuffer().then((buffer) => {
       workbook.xlsx.load(buffer);
     });
-    this.setState({ voteWorkbook: workbook });
-  }
+    setVoteWorkbook(workbook);
+  };
 
-  initCodeFile() {
+  const initCodeFile = () => {
     var workbook = new Excel.Workbook();
-    const voteCodeFile = this.props.voteCodeFile;
+    const voteCodeFile = props.voteCodeFile;
     voteCodeFile.arrayBuffer().then((buffer) => {
       workbook.xlsx.load(buffer);
     });
-    this.setState({ codeWorkbook: workbook });
-  }
+    setCodeWorkbook(workbook);
+  };
 
-  getVotingCodes() {
+  const getVotingCodes = () => {
     let codes = [];
-    const workbook = this.state.voteWorkbook;
+    const workbook = voteWorkbook;
     workbook
       .getWorksheet()
       .getColumn("B")
       .eachCell((content) => codes.push(content.text));
     return codes.slice(1);
-  }
+  };
 
-  getReferenceCodes() {
+  const getReferenceCodes = () => {
     let referenceCodes = [];
-    const workbook = this.state.codeWorkbook;
+    const workbook = codeWorkbook;
     workbook
       .getWorksheet()
       .getColumn("A")
       .eachCell((content) => referenceCodes.push(content.text));
     return referenceCodes;
-  }
+  };
 
-  compareVoteLength() {
+  const compareVoteLength = () => {
     var nonVoters = [];
-    let codes = this.getVotingCodes();
-    let referenceCodes = this.getReferenceCodes();
+    let codes = getVotingCodes();
+    let referenceCodes = getReferenceCodes();
     if (referenceCodes.length > codes.length) {
-      this.setState({ isResultValid: false, voteLengthCorrect: false });
+      setResultValid(false);
+      setVoteLengthCorrect(false);
       let difference = referenceCodes.filter((x) => !codes.includes(x));
       difference.forEach((code) => {
         nonVoters.push("Registrerad, men har ej röstat: " + code);
       });
     } else if (referenceCodes.length < codes.length) {
-      this.setState({ voteLengthCorrect: false });
+      setVoteLengthCorrect(false);
     } else {
-      this.setState({ voteLengthCorrect: true });
+      setVoteLengthCorrect(true);
     }
     return nonVoters;
-  }
+  };
 
-  compareVotingCodes() {
+  const compareVotingCodes = () => {
     let previousVoters = [];
-    let codes = this.getVotingCodes();
-    let referenceCodes = this.getReferenceCodes();
+    let codes = getVotingCodes();
+    let referenceCodes = getReferenceCodes();
     var result = [];
     var invalidCodes = [];
 
@@ -99,21 +90,21 @@ class ResultsView extends React.Component {
         referenceCodes = referenceCodes.filter((x) => x !== code);
       } else if (previousVoters.includes(code)) {
         invalidCodes.push("Ogiltig röst, har röstat mer än 1 gång: " + code);
-        this.setState({ isResultValid: false });
+        setResultValid(false);
       } else {
         invalidCodes.push("Ogiltig röst, ej registrerad: " + code);
-        this.setState({ isResultValid: false });
+        setResultValid(false);
       }
     });
     if (invalidCodes.length === 0) {
-      this.setState({ isResultValid: true });
+      setResultValid(true);
     }
     return [result, invalidCodes];
-  }
+  };
 
-  getElections() {
+  const getElections = () => {
     var columnHeaders = {};
-    const workbook = this.state.voteWorkbook;
+    const workbook = voteWorkbook;
     workbook
       .getWorksheet()
       .getRow(1)
@@ -123,12 +114,12 @@ class ResultsView extends React.Component {
         }
       });
     return columnHeaders;
-  }
+  };
 
-  getVotes() {
-    const workbook = this.state.voteWorkbook;
+  const getVotes = () => {
+    const workbook = voteWorkbook;
     let worksheet = workbook.getWorksheet();
-    let electionVotes = this.getElections();
+    let electionVotes = getElections();
     for (let i = 3; i <= worksheet.actualColumnCount; i++) {
       worksheet.getColumn(i).eachCell((cell) => {
         for (let prop in electionVotes) {
@@ -144,10 +135,10 @@ class ResultsView extends React.Component {
       electionVotes[prop].shift();
     }
     return electionVotes;
-  }
+  };
 
-  countVotes() {
-    const votes = this.getVotes();
+  const countVotes = () => {
+    const votes = getVotes();
     const results = {};
     for (let prop in votes) {
       votes[prop].forEach((vote) => {
@@ -162,19 +153,17 @@ class ResultsView extends React.Component {
       });
     }
     return results;
-  }
+  };
 
-  // --------------------------------------------------------------------------------------------------------------------------------------- //
-
-  onClick(event) {
-    this.props.setSubmitted(false);
+  const onClick = (event) => {
+    props.setSubmitted(false);
     event.preventDefault();
-  }
+  };
 
-  calculateResults() {
-    var result = this.countVotes();
+  const calculateResults = () => {
+    var result = countVotes();
     var votingResult = [];
-    this.compareVotingCodes().forEach((array) =>
+    compareVotingCodes().forEach((array) =>
       array.forEach((vote) => votingResult.push(vote))
     );
     var objArray = Object.entries(result);
@@ -188,39 +177,37 @@ class ResultsView extends React.Component {
       }
       finalResult.push(key + ": " + value + s);
     });
-    this.setState({
-      votingResult: votingResult,
-      finalResults: finalResult,
-      resultsVisible: true,
-      resultButtonVisible: false,
-      voteLength: this.getReferenceCodes().length,
-      voteLengthResult: this.compareVoteLength(),
-    });
-  }
+    setVotingResult(votingResult);
+    setFinalResult(finalResult);
+    setResultVisible(true);
+    setResultButtonVisible(false);
+    setVoteLength(getReferenceCodes().length);
+    setVoteLengthResult(compareVoteLength());
+  };
 
-  resultButton() {
+  const resultButton = () => {
     return (
       <div className="col text-center">
         <button
           type="button"
           className="btn btn-success m-4 btn-lg"
-          onClick={this.calculateResults}
+          onClick={calculateResults}
         >
           Visa valresultat
         </button>
       </div>
     );
-  }
+  };
 
-  resultList() {
-    if (this.state.isResultValid && this.state.voteLengthCorrect) {
+  const resultList = () => {
+    if (resultValid && voteLengthCorrect) {
       return (
         <div className="container w-75">
           <h1>
             <b>Resultat</b>
           </h1>
           <ul className="list-group">
-            {this.state.finalResults.map((result) => (
+            {finalResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -235,14 +222,14 @@ class ResultsView extends React.Component {
           </h1>
           <br></br>
           <h3>
-            <b>Antal röstande: {this.state.votingResult.length}</b>
+            <b>Antal röstande: {votingResult.length}</b>
           </h3>
           <h3>
-            <b>Röstlängd: {this.state.voteLength}</b>
+            <b>Röstlängd: {voteLength}</b>
           </h3>
           <br></br>
           <ul className="list-group">
-            {this.state.votingResult.map((result) => (
+            {votingResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -254,14 +241,14 @@ class ResultsView extends React.Component {
             <button
               type="button"
               className="btn btn-success m-4 btn-lg"
-              onClick={this.onClick}
+              onClick={onClick}
             >
               Genomför en ny röstning
             </button>
           </div>
         </div>
       );
-    } else if (this.state.isResultValid && !this.state.voteLengthCorrect) {
+    } else if (resultValid && !voteLengthCorrect) {
       return (
         <div className="container w-75">
           <h5>
@@ -272,7 +259,7 @@ class ResultsView extends React.Component {
           </h5>
           <br></br>
           <ul className="list-group">
-            {this.state.voteLengthResult.map((result) => (
+            {voteLengthResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -280,21 +267,21 @@ class ResultsView extends React.Component {
             ))}
           </ul>
           <li className="list-group-item">
-            <h5>Antal röstande: {this.state.votingResult.length}</h5>
-            <h5>Röstlängd: {this.state.voteLength}</h5>
+            <h5>Antal röstande: {votingResult.length}</h5>
+            <h5>Röstlängd: {voteLength}</h5>
           </li>
           <div className="col text-center">
             <button
               type="button"
               className="btn btn-success m-4 btn-lg"
-              onClick={this.onClick}
+              onClick={onClick}
             >
               Genomför en ny röstning
             </button>
           </div>
         </div>
       );
-    } else if (!this.state.isResultValid && this.state.voteLengthCorrect) {
+    } else if (!resultValid && voteLengthCorrect) {
       return (
         <div className="container w-75">
           <h5>
@@ -305,7 +292,7 @@ class ResultsView extends React.Component {
           </h5>
           <br></br>
           <ul className="list-group">
-            {this.state.votingResult.map((result) => (
+            {votingResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -316,14 +303,14 @@ class ResultsView extends React.Component {
             <button
               type="button"
               className="btn btn-success m-4 btn-lg"
-              onClick={this.onClick}
+              onClick={onClick}
             >
               Genomför en ny röstning
             </button>
           </div>
         </div>
       );
-    } else if (!this.state.isResultValid && !this.state.voteLengthCorrect) {
+    } else if (!resultValid && !voteLengthCorrect) {
       return (
         <div className="container w-75">
           <h5>
@@ -334,7 +321,7 @@ class ResultsView extends React.Component {
           </h5>
           <br></br>
           <ul className="list-group">
-            {this.state.votingResult.map((result) => (
+            {votingResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -343,7 +330,7 @@ class ResultsView extends React.Component {
           </ul>
           <br></br>
           <ul className="list-group">
-            {this.state.voteLengthResult.map((result) => (
+            {voteLengthResult.map((result) => (
               <li key={nextId()} className="list-group-item">
                 {" "}
                 {<h3> {result}</h3>}
@@ -359,14 +346,14 @@ class ResultsView extends React.Component {
           </h5>
           <br></br>
           <li className="list-group-item">
-            <h5>Antal röstande: {this.state.votingResult.length}</h5>
-            <h5>Röstlängd: {this.state.voteLength}</h5>
+            <h5>Antal röstande: {votingResult.length}</h5>
+            <h5>Röstlängd: {voteLength}</h5>
           </li>
           <div className="col text-center">
             <button
               type="button"
               className="btn btn-success m-4 btn-lg"
-              onClick={this.onClick}
+              onClick={onClick}
             >
               Genomför en ny röstning
             </button>
@@ -374,17 +361,13 @@ class ResultsView extends React.Component {
         </div>
       );
     }
-  }
+  };
 
-  render() {
-    return (
-      <div className="container w-50">
-        {this.state.resultsVisible ? this.resultList() : null}
-        <div className="row"></div>
-        {this.state.resultButtonVisible ? this.resultButton() : null}
-      </div>
-    );
-  }
+  return (
+    <div className="container w-50">
+      {resultVisible ? resultList() : null}
+      <div className="row"></div>
+      {resultButtonVisible ? resultButton() : null}
+    </div>
+  );
 }
-
-export default ResultsView;
