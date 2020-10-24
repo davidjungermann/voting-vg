@@ -2,13 +2,17 @@ import FirebaseInstance from "../FirebaseInstance.jsx";
 import React, { useState, useEffect } from "react";
 import "./FileSelector.css";
 
-export default function FileSelector() {
+export default function FileSelector(props) {
   const [files, setFiles] = useState([]);
   const [voteCodeFileUrl, setVoteCodeFileUrl] = useState("");
   const [voteFileUrl, setVoteFileUrl] = useState("");
   const [enabled, setEnabled] = useState(false);
-  const [selectedVoteCodeFile, setSelectedVoteCodeFile] = useState("Välj en fil med röstkoder");
-  const [selectedVoteFile, setSelectedVoteFile] = useState("Välj en fil med röster");
+  const [selectedVoteCodeFile, setSelectedVoteCodeFile] = useState(
+    "Välj en fil med röstkoder"
+  );
+  const [selectedVoteFile, setSelectedVoteFile] = useState(
+    "Välj en fil med röster"
+  );
 
   /* Singleton Firebase instance */
   const firebase = new FirebaseInstance().firebase;
@@ -28,10 +32,10 @@ export default function FileSelector() {
     let id = event.target.id;
     let file = event.target.files[0];
     setFiles([...files, { file_id: id, uploaded_file: file }]);
-    if(id === "0") {
-      setSelectedVoteCodeFile(file?.name)
+    if (id === "0") {
+      setSelectedVoteCodeFile(file?.name);
     } else {
-      setSelectedVoteFile(file?.name)
+      setSelectedVoteFile(file?.name);
     }
   };
 
@@ -41,20 +45,11 @@ export default function FileSelector() {
     const storageRef = firebase.storage().ref();
     files.forEach((file) => {
       if (file?.file_id === "0") {
-        let excelFile = storageRef.child("voting_codes.xlsx");
-        excelFile.put(file?.uploaded_file).then(() => {
-          excelFile.getDownloadURL().then((url) => {
-            setVoteCodeFileUrl(url);
-          });
-        });
+        props.setVoteCodeFile(file?.uploaded_file);
       } else {
-        let excelFile = storageRef.child("votes.xlsx");
-        excelFile.put(file?.uploaded_file).then(() => {
-          excelFile.getDownloadURL().then((url) => {
-            setVoteFileUrl(url);
-          });
-        });
+        props.setVoteFile(file?.uploaded_file);
       }
+      props.setSubmitted(true);
       setFiles([]);
       setSelectedVoteCodeFile("Välj en fil med röstkoder");
       setSelectedVoteFile("Välj en fil med röster");
