@@ -1,7 +1,6 @@
 import React from "react";
 import {
   BrowserRouter as Router,
-  Route,
   Switch,
   Redirect,
 } from "react-router-dom";
@@ -19,14 +18,9 @@ class App extends React.Component {
   }
 
   render() {
-    const votes = this.composeVoteView();
-    const files = this.composeFileView();
 
     return (
       <Router basename={process.env.PUBLIC_URL}>
-        <Switch>
-          <Redirect exact from="/" to="/file-selector" />
-        </Switch>
         <Container></Container>
       </Router>
     );

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import FileSelector from "../fileselector/FileSelector.jsx";
-import NewResultsView from "../NewResultsView.jsx";
 import ResultsView from "../ResultsView.jsx";
 import "./Container.css";
 

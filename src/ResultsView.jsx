@@ -15,7 +15,6 @@ class ResultsView extends React.Component {
       voteLengthCorrect: null,
       codeWorkbook: null,
       voteWorkbook: null,
-      isFetched: false,
       voteLengthResult: null,
     };
 
@@ -33,7 +32,6 @@ class ResultsView extends React.Component {
   initVoteFile() {
     var workbook = new Excel.Workbook();
     const voteFile = this.props.voteFile;
-    console.log(voteFile);
     voteFile.arrayBuffer().then((buffer) => {
       workbook.xlsx.load(buffer);
     });
