@@ -1,5 +1,5 @@
 .submit-btn-root {
-  margin-top: 20px;
+  margin-top: 40px;
 }
 
 .upload-btn {
@@ -41,4 +41,8 @@
 .file-input + label:hover {
   opacity: 1;
   transform: translateY(2px);
+}
+
+.error-message {
+  color: red;
 }

@@ -1,7 +1,5 @@
 import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
-import FileSelector from "./fileselector/FileSelector.jsx";
-import ResultsView from "./resultsView/ResultsView.jsx";
 import Container from "./container/Container.jsx";
 import Footer from "./footer/Footer.jsx";
 import "./App.css";

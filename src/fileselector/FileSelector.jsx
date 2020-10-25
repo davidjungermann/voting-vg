@@ -10,6 +10,7 @@ export default function FileSelector(props) {
   const [selectedVoteFile, setSelectedVoteFile] = useState(
     "Välj en fil med röster"
   );
+  const [errorMessageVisible, setErrorMessageVisible] = useState(false);
 
   /* useEffect hook that enables submit button if two files are provided. */
   useEffect(() => {
@@ -23,13 +24,18 @@ export default function FileSelector(props) {
   /* Called when each file is provided, set current state for component. */
   const handleFileUpload = (event) => {
     event.preventDefault();
+    setErrorMessageVisible(false);
     let id = event.target.id;
     let file = event.target.files[0];
-    setFiles([...files, { file_id: id, uploaded_file: file }]);
-    if (id === "0") {
-      setSelectedVoteCodeFile(file?.name);
+    if (file.name.endsWith("xlsx") || file.name.endsWith("xls")) {
+      setFiles([...files, { file_id: id, uploaded_file: file }]);
+      if (id === "0") {
+        setSelectedVoteCodeFile(file?.name);
+      } else {
+        setSelectedVoteFile(file?.name);
+      }
     } else {
-      setSelectedVoteFile(file?.name);
+      setErrorMessageVisible(true);
     }
   };
 
@@ -74,6 +80,11 @@ export default function FileSelector(props) {
             onChange={handleFileUpload}
           />
           <label htmlFor={1}>{selectedVoteFile}</label>
+          {errorMessageVisible ? (
+            <div className="error-message-root">
+              <span className="error-message">Filen måste vara av typen .xlsx eller .xls.</span>
+            </div>
+          ) : null}
         </div>
         {enabled ? (
           <div className="submit-btn-root">
