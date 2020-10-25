@@ -29,13 +29,16 @@
   padding-left: 64px;
   border-radius: 4px;
   border-style: solid;
-  opacity: 1;
-  transition: opacity 0.25s ease-in-out;
-  -moz-transition: opacity 0.25s ease-in-out;
-  -webkit-transition: opacity 0.25s ease-in-out;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  color: black;
+  width: inherit;
+  margin-bottom: 20px;
 }
 
 .file-input:focus + label,
 .file-input + label:hover {
-  opacity: 60%;
+  opacity: 1;
+  transform: translateY(2px);
 }
