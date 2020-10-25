@@ -1,0 +1,14 @@
+.footer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 35px;
+  color: #646464;
+  text-align: left;
+}
+
+.support-text {
+    padding-left: 8px;
+    padding-bottom: 8px;
+}
