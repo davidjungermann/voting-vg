@@ -201,6 +201,20 @@ export default function NewResultsView(props) {
     );
   };
 
+  const newVoteButton = () => {
+    return (
+      <div className="col text-center">
+        <button
+          type="button"
+          className="btn btn-success m-4 btn-lg"
+          onClick={onClick}
+        >
+          Genomför en ny röstning
+        </button>
+      </div>
+    );
+  };
+
   const resultList = () => {
     if (resultValid && voteLengthCorrect) {
       return (
@@ -238,16 +252,7 @@ export default function NewResultsView(props) {
               </li>
             ))}
           </ul>
-
-          <div className="col text-center">
-            <button
-              type="button"
-              className="btn btn-success m-4 btn-lg"
-              onClick={onClick}
-            >
-              Genomför en ny röstning
-            </button>
-          </div>
+          {newVoteButton()}
         </div>
       );
     } else if (resultValid && !voteLengthCorrect) {
@@ -272,15 +277,7 @@ export default function NewResultsView(props) {
             <h5>Antal röstande: {votingResult.length}</h5>
             <h5>Röstlängd: {voteLength}</h5>
           </li>
-          <div className="col text-center">
-            <button
-              type="button"
-              className="btn btn-success m-4 btn-lg"
-              onClick={onClick}
-            >
-              Genomför en ny röstning
-            </button>
-          </div>
+          {newVoteButton()}
         </div>
       );
     } else if (!resultValid && voteLengthCorrect) {
@@ -301,15 +298,7 @@ export default function NewResultsView(props) {
               </li>
             ))}
           </ul>
-          <div className="col text-center">
-            <button
-              type="button"
-              className="btn btn-success m-4 btn-lg"
-              onClick={onClick}
-            >
-              Genomför en ny röstning
-            </button>
-          </div>
+          {newVoteButton()}
         </div>
       );
     } else if (!resultValid && !voteLengthCorrect) {
@@ -351,15 +340,7 @@ export default function NewResultsView(props) {
             <h5>Antal röstande: {votingResult.length}</h5>
             <h5>Röstlängd: {voteLength}</h5>
           </li>
-          <div className="col text-center">
-            <button
-              type="button"
-              className="btn btn-success m-4 btn-lg"
-              onClick={onClick}
-            >
-              Genomför en ny röstning
-            </button>
-          </div>
+          {newVoteButton()}
         </div>
       );
     }
