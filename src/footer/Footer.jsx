@@ -1,7 +1,14 @@
 import React from "react";
 import "./Footer.css";
+import resume from "../Assets/docs.pdf";
 export default function Footer() {
-  return <div className="footer">
-      <span className="support-text">Frågor: david.jungermann@gmail.com</span>
-  </div>;
+  return (
+    <div className="footer">
+      <span className="support-text">
+        <a href={resume} download>
+          Läs på om systemet här!
+        </a>
+      </span>
+    </div>
+  );
 }
