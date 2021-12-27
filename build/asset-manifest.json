@@ -1,25 +1,26 @@
 {
   "files": {
-    "main.css": "/voting-vg/static/css/main.a2d38d5f.chunk.css",
-    "main.js": "/voting-vg/static/js/main.f97ab857.chunk.js",
-    "main.js.map": "/voting-vg/static/js/main.f97ab857.chunk.js.map",
+    "main.css": "/voting-vg/static/css/main.529c985c.chunk.css",
+    "main.js": "/voting-vg/static/js/main.b6f3c4e2.chunk.js",
+    "main.js.map": "/voting-vg/static/js/main.b6f3c4e2.chunk.js.map",
     "runtime-main.js": "/voting-vg/static/js/runtime-main.28e234f0.js",
     "runtime-main.js.map": "/voting-vg/static/js/runtime-main.28e234f0.js.map",
-    "static/css/2.6414bb7b.chunk.css": "/voting-vg/static/css/2.6414bb7b.chunk.css",
-    "static/js/2.34756c6c.chunk.js": "/voting-vg/static/js/2.34756c6c.chunk.js",
-    "static/js/2.34756c6c.chunk.js.map": "/voting-vg/static/js/2.34756c6c.chunk.js.map",
+    "static/css/2.5aa997f2.chunk.css": "/voting-vg/static/css/2.5aa997f2.chunk.css",
+    "static/js/2.7d8c852d.chunk.js": "/voting-vg/static/js/2.7d8c852d.chunk.js",
+    "static/js/2.7d8c852d.chunk.js.map": "/voting-vg/static/js/2.7d8c852d.chunk.js.map",
     "index.html": "/voting-vg/index.html",
-    "precache-manifest.d8e0934bc5716f2d2cda64c9988da361.js": "/voting-vg/precache-manifest.d8e0934bc5716f2d2cda64c9988da361.js",
+    "precache-manifest.020fd8d6e33de17dc09c812b9f5113df.js": "/voting-vg/precache-manifest.020fd8d6e33de17dc09c812b9f5113df.js",
     "service-worker.js": "/voting-vg/service-worker.js",
-    "static/css/2.6414bb7b.chunk.css.map": "/voting-vg/static/css/2.6414bb7b.chunk.css.map",
-    "static/css/main.a2d38d5f.chunk.css.map": "/voting-vg/static/css/main.a2d38d5f.chunk.css.map",
-    "static/js/2.34756c6c.chunk.js.LICENSE.txt": "/voting-vg/static/js/2.34756c6c.chunk.js.LICENSE.txt"
+    "static/css/2.5aa997f2.chunk.css.map": "/voting-vg/static/css/2.5aa997f2.chunk.css.map",
+    "static/css/main.529c985c.chunk.css.map": "/voting-vg/static/css/main.529c985c.chunk.css.map",
+    "static/js/2.7d8c852d.chunk.js.LICENSE.txt": "/voting-vg/static/js/2.7d8c852d.chunk.js.LICENSE.txt",
+    "static/media/docs.pdf": "/voting-vg/static/media/docs.9963ae0e.pdf"
   },
   "entrypoints": [
     "static/js/runtime-main.28e234f0.js",
-    "static/css/2.6414bb7b.chunk.css",
-    "static/js/2.34756c6c.chunk.js",
-    "static/css/main.a2d38d5f.chunk.css",
-    "static/js/main.f97ab857.chunk.js"
+    "static/css/2.5aa997f2.chunk.css",
+    "static/js/2.7d8c852d.chunk.js",
+    "static/css/main.529c985c.chunk.css",
+    "static/js/main.b6f3c4e2.chunk.js"
   ]
 }
